@@ -1,0 +1,15 @@
+{
+  "name": "apitest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "file:fs-0.0.2.tgz",
+    "js-yaml": "file:js-yaml-3.14.0.tgz"
+  }
+}
