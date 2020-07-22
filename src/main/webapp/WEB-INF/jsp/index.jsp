@@ -61,6 +61,66 @@
 							</td>
 						</tr>
 					</table>
+					<div class="yaml-content">
+						<label>parameters</label>
+						<table>
+							<tr>
+								<td><label>name</label></td>
+								<td><input name="paths-params-name" type="text" placeholder="param"></td>
+							</tr>
+							<tr>
+								<td><label>in</label></td>
+								<td>
+									<select name="paths-params-in">
+										<option value="query">query</option>
+										<option value="header">header</option>
+										<option value="path">path</option>
+										<option value="cookie">cookie</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td><label>required</label></td>
+								<td>
+									<input type="radio" name="paths-params-required" value="Y" checked="checked">Y
+									<input type="radio" name="paths-params-required" value="N" checked="checked">N
+								</td>
+							</tr>
+							<tr>
+								<td><label>default</label></td>
+								<td><input name="paths-params-default" type="text" placeholder="default value"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="yaml-content">
+						<label>request body</label>
+						<table>
+							<tr>
+								<td><label>required</label></td>
+								<td>
+									<input type="radio" name="paths-reqbody-required" value="Y" checked="checked">Y
+									<input type="radio" name="paths-reqbody-required" value="N" checked="checked">N
+								</td>
+							</tr>
+							<tr>
+								<td><label>content</label></td>
+								<td><input name="paths-reqbody-content" type="text" placeholder="content"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="yaml-content">
+						<label>response</label>
+						<table>
+							<tr>
+								<td><label>default</label></td>
+								<td><input name="paths-res-default" type="text" placeholder="default value"></td>
+							</tr>
+							<tr>
+								<td><label>status code</label></td>
+								<td><input name="paths-res-statuscode" type="text" placeholder="status code"></td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>		
 			<div>
