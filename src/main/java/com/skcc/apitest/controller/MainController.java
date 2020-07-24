@@ -47,7 +47,7 @@ public class MainController {
 			System.out.println(cmd);
 			CLIExecutor.execute(cmd);
 			
-			cmd = "newman run "+dir+"\\\\collection\\\\collection.json";
+			cmd = "newman run "+dir+"\\\\collection\\\\collection.json --global-var 'baseUrl=http://petstore.swagger.io/v1";
 			CLIExecutor.execute(cmd);
 			System.out.println("finish");
 		} catch (Exception e) {
