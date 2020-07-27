@@ -4,11 +4,6 @@ import java.io.*;
 import java.util.*;
 
 public class CLIExecutor {
-	public static void main(String[] args) {
-        // 실행
-		CLIExecutor.execute("ipconfig");
-    }
- 
     /**
      * cmd 명령어 실행
      *
