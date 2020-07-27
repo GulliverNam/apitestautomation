@@ -15,22 +15,28 @@ public class OpenApiV3 {
 	private Paths paths;
 	private Component component;
 	
+	/** Info **/
 	public static class Info{
 		String version;
 		String title;
 	}
+	/**********/
+	
+	/** Servers **/
 	public static class Servers{
 		String url;
 	}
+	/************/
+	
+	
+	/** Paths **/
+	// layer 2
 	public static class Paths{
-		String filedPattern;
+		String fieldPattern;
 		List<ApiDetail> apiDetail;
 	}
-	public static class Component{
-		List<Schema> schemas;
-		List<Parameters> parameters;
-	}
 	
+	// layer 3
 	public static class ApiDetail{
 		String method;
 		RequestBody requestBody;
@@ -38,6 +44,7 @@ public class OpenApiV3 {
 		List<Parameters> parameters;
 	}
 	
+	//layer 4
 	public static class RequestBody{
 		boolean required;
 		Content content;
@@ -53,19 +60,29 @@ public class OpenApiV3 {
 		String defaultVal;
 	}
 
-	public static class Response{
-		Content content;
-	}
-	
+	// layer 5
 	public static class Content{
 		String mediaType;
 		Schema schema;
 	}
 	
+	public static class Response{
+		Content content;
+	}
+	
+	// layer 6
 	public static class Schema{
 		String type;
 		Map<String, Object> details;
 	}
+	/***********/
+	
+	/** Component **/
+	public static class Component{
+		List<Schema> schemas;
+		List<Parameters> parameters;
+	}
+	/**************/
 	
 	// Getter & Setter
 	public String getOpenapi() {
