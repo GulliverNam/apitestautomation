@@ -13,6 +13,7 @@
 	margin-bottom: 10px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
 	var patternNum = -1;
 	var detailNums = [];
@@ -193,7 +194,7 @@
 			schemaDetail.innerHTML = ``;
 		}
 	}
-	function yamlSubmit(){
+	/* function yamlSubmit(){
 		var result = 
 `openapi: 3.0.0
 info:
@@ -212,7 +213,7 @@ paths:`;
 		
 		console.log(result);
 		alert(result);
-	}
+	} */
 </script>
 </head>
 <body>
@@ -260,7 +261,7 @@ paths:`;
 			<a href="#" onclick="addFieldPattern()">pattern 추가</a>
 			<div id="field-patterns" class="yaml-form"></div>
 		</div>
-		<button type="button" onclick="yamlSubmit()">작성</button>
+		<button id="yaml-btn" type="button" >작성</button>
 	</form>
 </body>
 </html>
