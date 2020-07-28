@@ -17,20 +17,22 @@
 <script type="text/javascript">
 	var patternNum = -1;
 	var detailNums = [];
-	function addFieldPattern(){
-		++patternNum;
-		var div = document.querySelector("#field-patterns");
-		div.innerHTML += `
-			<div class="yaml-form">
-				<h3>field pattern</h3>
-				<input id='field-pattern-\${patternNum}' placeholder='/path'/>
-				<a href='#' onclick='addApiDetail(\${patternNum})'>추가</a>
-				<div id="api-detail-\${patternNum}">
+	$(document).ready(function(){
+		$("#field-add-btn").click(function() {
+			++patternNum;
+			$("#field-patterns").append(`
+				<div class="yaml-form">
+					<h3>field pattern</h3>
+					<input id='field-pattern-\${patternNum}' placeholder='/path'/>
+					<button type="button" onclick='addApiDetail(\${patternNum})'>추가</button>
+					<div id="api-detail-\${patternNum}">
+					</div>
 				</div>
-			</div>
-		`;
-		detailNums[patternNum] = -1;
-	}
+			`);
+			detailNums[patternNum] = -1;
+		});
+	});
+	
 	function addApiDetail(pnum){
 		++detailNums[pnum];
 		var div = document.querySelector(`#api-detail-\${pnum}`);
@@ -214,6 +216,7 @@ paths:`;
 		console.log(result);
 		alert(result);
 	} */
+	$
 </script>
 </head>
 <body>
@@ -258,7 +261,7 @@ paths:`;
 		</div>
 		<div>
 			<h2>API 상세</h2>
-			<a href="#" onclick="addFieldPattern()">pattern 추가</a>
+			<button type="button" id="field-add-btn" href="#" >pattern 추가</button>
 			<div id="field-patterns" class="yaml-form"></div>
 		</div>
 		<button id="yaml-btn" type="button" >작성</button>
