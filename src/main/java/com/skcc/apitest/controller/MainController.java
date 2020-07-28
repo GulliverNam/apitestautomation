@@ -27,37 +27,29 @@ public class MainController {
 	@Autowired
 	APIService service;
 	
-	@GetMapping("/")
-	public ModelAndView main() {
-		return new ModelAndView("index");
-	}
+//	@GetMapping("/")
+//	public ModelAndView main() {
+//		return new ModelAndView("index");
+//	}
+//	@PostMapping("/upload")
+//	public ModelAndView uploadYaml(@RequestParam("apidoc") MultipartFile file) {
+//		System.out.println(file);
+//		return new ModelAndView("index");
+//	}
 	
-	@GetMapping("/swagger")
+	@GetMapping("/")
 	public ModelAndView swaggerMain() {
 		return new ModelAndView("swagger");
 	}
 	
+	
 	@PostMapping("/upload")
-	public ModelAndView uploadYaml(@RequestParam("apidoc") MultipartFile file) {
-		System.out.println(file);
-		return new ModelAndView("index");
-	}
-	
-	@PostMapping("/swagger/upload")
-	public RedirectView uploadSwagger(@RequestParam("apidoc") MultipartFile swaggerFile) {
-		service.swaggerToOpenapi(swaggerFile);
+	public RedirectView uploadSwagger(@RequestParam("apidoc") MultipartFile file) {
+		service.swaggerToOpenapi(file);
 		service.yamlToJson();
 		service.addTestScript();
 		service.runTest();
-		return new RedirectView("/swagger");
+		return new RedirectView("/");
 	}
 	
-	@PostMapping("/")
-	public ModelAndView createYaml(@RequestParam("rowtext") String doc) {
-		service.saveYaml(doc);
-		service.yamlToJson();
-		service.addTestScript();
-		service.runTest();
-		return new ModelAndView("index");
-	}
 }

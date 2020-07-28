@@ -8,9 +8,12 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 	<body>
-		<form action="/swagger/upload" method="post" enctype="multipart/form-data">
-			<input type="file" id="apidoc" name="apidoc">
-			<button type="submit">Swagger 파일 업로드(.json)</button>
-		</form>
+		<div align="center">
+			<h3>명세서 파일을 등록해주세요.(.yaml, .yml, .json)</h3>
+			<form action="/upload" method="post" enctype="multipart/form-data">
+				<input type="file" id="apidoc" name="apidoc" required="required">
+				<button type="submit">파일 등록</button>
+			</form>
+		</div>
 	</body>
 </html>

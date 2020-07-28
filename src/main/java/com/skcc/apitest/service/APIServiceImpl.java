@@ -16,11 +16,11 @@ public class APIServiceImpl implements APIService {
 	String jsonDir = dir+"\\collection\\collection.json";
 	
 	@Override
-	public void swaggerToOpenapi(MultipartFile swaggerFile) {
-		File file = new File(swaggerDir);
+	public void swaggerToOpenapi(MultipartFile file) {
+		File outputFile = new File(swaggerDir);
 		try {
-			FileOutputStream fos = new FileOutputStream(file);
-			fos.write(swaggerFile.getBytes());
+			FileOutputStream fos = new FileOutputStream(outputFile);
+			fos.write(file.getBytes());
 			fos.flush();
 			fos.close();
 			String cmd = "swagger2openapi -y -o "+yamlDir+" "+swaggerDir;
