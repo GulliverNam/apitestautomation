@@ -48,7 +48,8 @@
 										var params = method["parameters"];
 										console.log(method);
 										newSpac+=`
-														<p><strong>\${httpMethod}</strong>  \${method["summary"]}</p>
+														<h4>\${httpMethod}</h4>  
+														<p>\${method["summary"]}</p>
 														<div class="container">
 										`;
 										params.forEach(function(param, paramIdx){
@@ -75,7 +76,7 @@
 									`;
 								});
 								newSpac+=`
-									<button type="submit" class="btn btn-primary">입력</button>
+										<button type="submit" class="btn btn-primary">입력</button>
 								`;
 								$("#specForm").html(newSpac);
 							}
