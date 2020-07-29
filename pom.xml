@@ -92,8 +92,9 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.11.1</version>
 		</dependency>	
+		
 		<!-- json 관련 -->
-		<dependency>
+		<!-- <dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
 		    <version>20200518</version>
@@ -102,7 +103,7 @@
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>

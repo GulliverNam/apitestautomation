@@ -64,7 +64,8 @@ paths:
                     name:
                       type: string
   /board/{id}: 
-    parameters: 
+    put:
+      parameters: 
       - name: id
         in: path
         required: true
@@ -74,7 +75,6 @@ paths:
           format: int64
           minimum: 1
           default: 1
-    put:
       summary: 게시물 수정
       requestBody:
         required: true
@@ -104,6 +104,25 @@ paths:
                   name:
                     type: string
     delete:
+      parameters: 
+      - name: id1
+        in: path
+        required: true
+        description: 수정할 게시물의 id
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+          default: 1
+      - name: id2
+        in: path
+        required: true
+        description: 수정할 게시물의 id
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+          default: 1
       summary: 게시물 삭제
       responses:
         '200':

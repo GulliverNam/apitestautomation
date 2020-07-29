@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,38 +19,27 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.yaml.snakeyaml.Yaml;
 
-import com.skcc.apitest.service.APIService;
+import com.skcc.apitest.dto.ApiSpec;
+import com.skcc.apitest.service.ApiService;
 import com.skcc.apitest.util.CLIExecutor;
 
 @RestController
 public class MainController {
 	
 	@Autowired
-	APIService service;
-	
-//	@GetMapping("/")
-//	public ModelAndView main() {
-//		return new ModelAndView("index");
-//	}
-//	@PostMapping("/upload")
-//	public ModelAndView uploadYaml(@RequestParam("apidoc") MultipartFile file) {
-//		System.out.println(file);
-//		return new ModelAndView("index");
-//	}
+	ApiService service;
 	
 	@GetMapping("/")
-	public ModelAndView swaggerMain() {
+	public ModelAndView mainPage() {
 		return new ModelAndView("swagger");
 	}
 	
-	
 	@PostMapping("/upload")
-	public RedirectView uploadSwagger(@RequestParam("apidoc") MultipartFile file) {
-		service.swaggerToOpenapi(file);
-		service.yamlToJson();
-		service.addTestScript();
-		service.runTest();
-		return new RedirectView("/");
+	public List<ApiSpec> upload(@RequestParam("apidoc") MultipartFile file) {
+		service.uploadFile(file);
+		List<ApiSpec> apiSpec = service.getApiSpec();
+		System.out.println(apiSpec);
+		return apiSpec;
 	}
 	
 }

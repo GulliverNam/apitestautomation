@@ -9,120 +9,134 @@ import org.springframework.stereotype.Repository;
 public class OpenApiV3 {
 	
 	// layer 1
-	private String openapi = "3.0.0";
-	private Info info;
-	private Servers servers;
-	private Paths paths;
-	private Component component;
+	public String openapi = "3.0.0";
+	public Info info;
+	public Servers servers;
+	public Paths paths;
+	public Component component;
 	
 	/** Info **/
-	public static class Info{
+	public class Info{
 		String version;
 		String title;
+		
+		@Override
+		public String toString() {
+			return "Info [version=" + version + ", title=" + title + "]";
+		}
+		
 	}
 	/**********/
 	
 	/** Servers **/
-	public static class Servers{
+	public class Servers{
 		String url;
+
+		@Override
+		public String toString() {
+			return "Servers [url=" + url + "]";
+		}
 	}
 	/************/
 	
 	
 	/** Paths **/
 	// layer 2
-	public static class Paths{
+	public class Paths{
 		String fieldPattern;
 		List<ApiDetail> apiDetail;
+		@Override
+		public String toString() {
+			return "Paths [fieldPattern=" + fieldPattern + ", apiDetail=" + apiDetail + "]";
+		}
 	}
 	
 	// layer 3
-	public static class ApiDetail{
+	public class ApiDetail{
 		String method;
 		RequestBody requestBody;
 		List<Responses> responses;
 		List<Parameters> parameters;
+		@Override
+		public String toString() {
+			return "ApiDetail [method=" + method + ", requestBody=" + requestBody + ", responses=" + responses
+					+ ", parameters=" + parameters + "]";
+		}
 	}
 	
 	//layer 4
-	public static class RequestBody{
+	public class RequestBody{
 		boolean required;
 		Content content;
+		@Override
+		public String toString() {
+			return "RequestBody [required=" + required + ", content=" + content + "]";
+		}
+		
 	}
-	public static class Responses{
+	public class Responses{
 		String statusCode;
 		Response response;
+		@Override
+		public String toString() {
+			return "Responses [statusCode=" + statusCode + ", response=" + response + "]";
+		}
+		
 	}
-	public static class Parameters{
+	public class Parameters{
 		String name;
 		String in;
 		boolean required;
 		String defaultVal;
+		@Override
+		public String toString() {
+			return "Parameters [name=" + name + ", in=" + in + ", required=" + required + ", defaultVal=" + defaultVal
+					+ "]";
+		}
 	}
 
 	// layer 5
-	public static class Content{
+	public class Content{
 		String mediaType;
 		Schema schema;
+		@Override
+		public String toString() {
+			return "Content [mediaType=" + mediaType + ", schema=" + schema + "]";
+		}
 	}
 	
-	public static class Response{
+	public class Response{
 		Content content;
+
+		@Override
+		public String toString() {
+			return "Response [content=" + content + "]";
+		}
+		
 	}
 	
 	// layer 6
-	public static class Schema{
+	public class Schema{
 		String type;
 		Map<String, Object> details;
+		@Override
+		public String toString() {
+			return "Schema [type=" + type + ", details=" + details + "]";
+		}
+		
 	}
 	/***********/
 	
 	/** Component **/
-	public static class Component{
+	public class Component{
 		List<Schema> schemas;
 		List<Parameters> parameters;
+		@Override
+		public String toString() {
+			return "Component [schemas=" + schemas + ", parameters=" + parameters + "]";
+		}
+		
 	}
 	/**************/
-	
-	// Getter & Setter
-	public String getOpenapi() {
-		return openapi;
-	}
-
-	public void setOpenapi(String openapi) {
-		this.openapi = openapi;
-	}
-
-	public Info getInfo() {
-		return info;
-	}
-
-	public void setInfo(Info info) {
-		this.info = info;
-	}
-
-	public Servers getServers() {
-		return servers;
-	}
-
-	public void setServers(Servers servers) {
-		this.servers = servers;
-	}
-
-	public Paths getPaths() {
-		return paths;
-	}
-
-	public void setPaths(Paths paths) {
-		this.paths = paths;
-	}
-
-	public Component getComponent() {
-		return component;
-	}
-
-	public void setComponent(Component component) {
-		this.component = component;
-	}
 	
 }
