@@ -1,0 +1,503 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: '211.170.25.109:9182'
+basePath: /qms
+tags:
+  - name: api-linked-projects-controller
+    description: Api Linked Projects Controller
+  - name: api-static-code-analysis-controller
+    description: Api Static Code Analysis Controller
+paths:
+  /api/v1/integration/linked/projects:
+    get:
+      tags:
+        - api-linked-projects-controller
+      summary: Linked Project 정보 (다건)
+      operationId: getLinkedProjects
+      produces:
+        - '*/*'
+      parameters:
+        - name: page
+          in: query
+          description: '페이지(입력값 1부터 시작하며, ''PageSize''개씩 반환)'
+          required: true
+          type: string
+          default: '1'
+          allowEmptyValue: false
+        - name: pageSize
+          in: query
+          description: '페이지사이즈(입력값 100부터 시작하며, ''PageSize'' 반환)'
+          required: true
+          type: string
+          default: '100'
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LinkedProjectVo'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/linked/projects/{projectId}':
+    get:
+      tags:
+        - api-linked-projects-controller
+      summary: Linked Project 정보 (단건)
+      operationId: getLinkedProjectByProjectId
+      produces:
+        - '*/*'
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LinkedProjectVo'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/children':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 정보 - 취합 (다건)
+      operationId: getComponentTreeChidren
+      produces:
+        - '*/*'
+      parameters:
+        - name: componentPath
+          in: query
+          description: componentPath
+          required: true
+          type: string
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/coverage':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 상세 정보 - 커버리지 (다건)
+      operationId: getComponentTreeCoverage
+      produces:
+        - '*/*'
+      parameters:
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/maintainability':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 상세 정보 - 취약점 - Code Smells (다건)
+      operationId: getComponentTreeMaintainability
+      produces:
+        - '*/*'
+      parameters:
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/security':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 상세 정보 - 보안 (다건)
+      operationId: getComponentTreeSecurity
+      produces:
+        - '*/*'
+      parameters:
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/sources/defects':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 요약 정보 - 소스코드파일별 (다건)
+      operationId: getResultDefectedbyFiles
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          in: query
+          description: '페이지(입력값 1부터 시작하며, ''PageSize''개씩 반환)'
+          required: true
+          type: string
+          default: '1'
+          allowEmptyValue: false
+        - name: pageSize
+          in: query
+          description: '페이지사이즈(입력값 100부터 시작하며, ''PageSize'' 반환)'
+          required: true
+          type: string
+          default: '500'
+          allowEmptyValue: false
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+        - name: sort
+          in: query
+          description: >-
+            정렬기준
+            점검결과항목(sqale_index,coverage,ncloc,reliability_rating,security_rating)
+          required: true
+          type: string
+          default: ncloc
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/sources/file/defects':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 요약 정보 - 대상 소스코드파일 (단건)
+      operationId: getResultDefectedByFile
+      produces:
+        - '*/*'
+      parameters:
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+        - name: sourceCodePath
+          in: query
+          description: 소스코드파일 Path 정보
+          required: true
+          type: string
+          default: src/main
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/measures/component/tree/sources/multi/files/defects':
+    post:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 점검결과 요약 정보 - 요청 소스코드파일별 (다건)
+      operationId: getResultDefectedbyFiles_1
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: fileNames
+          in: query
+          description: '요청 소스코드파일이름 : Comma-separated list of file names'
+          required: true
+          type: string
+          default: 'example, metric'
+          allowEmptyValue: false
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/v1/integration/sca/projects/{projectId}/search/component/tree/sources/file/name':
+    get:
+      tags:
+        - api-static-code-analysis-controller
+      summary: 대상 소스코드파일 Search
+      operationId: getCompomentByName
+      produces:
+        - '*/*'
+      parameters:
+        - name: fileName
+          in: query
+          description: 소스코드파일 Name
+          required: true
+          type: string
+          default: example
+          allowEmptyValue: false
+        - name: projectId
+          in: path
+          description: 공통으로 사용하는 프로젝트 No.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SqComponentTree'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  LinkedProjectVo:
+    type: object
+    required:
+      - delYn
+      - linkCode
+      - linkProjectName
+      - linkProjectNo
+      - managerId
+      - managerName
+      - projectEndYn
+      - projectName
+      - projectNo
+      - projectStatusName
+      - serviceId
+    properties:
+      serviceId:
+        type: string
+        example: test-sonar-114-server-001
+        description: 서비스ID (QMS에 등록된 연계도구의 등록번호)
+      linkCode:
+        type: string
+        example: SONARQUBE
+        description: 연계도구코드
+      linkProjectNo:
+        type: string
+        example: Dev-QMS-Sonarqube-연계
+        description: 연계시스템의 프로젝트 고유번호
+      linkProjectName:
+        type: string
+        example: Dev-QMS-Sonarqube-연계
+        description: 연계시스템의 프로젝트 명
+      delYn:
+        type: string
+        description: 프로젝트 삭제 여부
+      managerId:
+        type: string
+        description: 관리자사번
+      managerName:
+        type: string
+        description: 관리자명
+      projectEndYn:
+        type: string
+        description: PMS 프로젝트 상태
+      projectName:
+        type: string
+        description: PMS 프로젝트명
+      projectNo:
+        type: string
+        description: PMS 프로젝트No
+      projectStatusName:
+        type: string
+        description: PMS 프로젝트 상태명
+    title: LinkedProjectVo
+    description: 'Linked Info of Projects, 프로젝트 매핑정보'
+  SqComponentMeasures:
+    type: object
+    required:
+      - description
+      - id
+      - key
+      - language
+      - measures
+      - name
+      - path
+      - qualifier
+    properties:
+      description:
+        type: string
+        example: BasicMarkdownParser
+        description: 해당 컴포넌트(대상) Description
+      id:
+        type: string
+        example: AVHE6Jo2EplJjXTo0Rzw
+        description: 해당 컴포넌트(대상)의 고유ID
+      key:
+        type: string
+        example: >-
+          com.sonarsource:java-markdown:src/test/java/com/sonarsource/markdown/BasicMarkdownParser.java
+        description: 해당 컴포넌트(대상) Key
+      language:
+        type: string
+        example: java
+        description: 해당 컴포넌트(대상) language
+      measures:
+        type: array
+        description: 해당 컴포넌트(대상) 점검결과
+        items:
+          $ref: '#/definitions/SqMetric'
+      name:
+        type: string
+        example: BasicMarkdownParser.java
+        description: 해당 컴포넌트(대상) Name
+      path:
+        type: string
+        example: src/test/java/com/sonarsource/markdown/BasicMarkdownParser.java
+        description: 해당 컴포넌트(대상) Path Info
+      qualifier:
+        type: string
+        example: UTS
+        description: 해당 컴포넌트(대상) 구분
+    title: SqComponentMeasures
+    description: Defected Info based on components
+  SqComponentTree:
+    type: object
+    required:
+      - baseComponent
+      - components
+      - paging
+    properties:
+      paging:
+        description: 페이징 정보
+        $ref: '#/definitions/SqPaging'
+      baseComponent:
+        description: 해당 컴포넌트(대상)의 정보(점검결과등등)
+        $ref: '#/definitions/SqComponentMeasures'
+      components:
+        type: array
+        description: 해당 컴포넌트(대상)의 하위 정보(점검결과등등)
+        items:
+          $ref: '#/definitions/SqComponentMeasures'
+    title: SqComponentTree
+    description: Defected Info Tree based on components
+  SqMetric:
+    type: object
+    required:
+      - metric
+      - value
+    properties:
+      metric:
+        type: string
+        example: coverage
+        description: 점검항목명
+      value:
+        type: string
+        example: 99
+        description: 점검결과
+    title: SqMetric
+    description: Defected Info
+  SqPaging:
+    type: object
+    required:
+      - pageIndex
+      - pageSize
+      - total
+    properties:
+      pageIndex:
+        type: integer
+        format: int32
+        example: 1
+        description: 페이지 인덱스
+      pageSize:
+        type: integer
+        format: int32
+        example: 500
+        description: 페이지 사이즈
+      total:
+        type: integer
+        format: int32
+        example: 1
+        description: 전체 개수
+    title: SqPaging
+    description: Paging Info
