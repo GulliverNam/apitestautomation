@@ -3,12 +3,7 @@ package com.skcc.apitest.service;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.skcc.apitest.dto.ApiSpec;
-import com.skcc.apitest.dto.Content;
-import com.skcc.apitest.dto.Method;
-import com.skcc.apitest.dto.Parameters;
-import com.skcc.apitest.dto.ReqBody;
-import com.skcc.apitest.dto.Schema;
 import com.skcc.apitest.util.CLIExecutor;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.OpenAPIV3Parser;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -63,11 +55,9 @@ public class ApiServiceImpl implements ApiService {
 				String openapi = (String)yaml.get("openapi");
 				if(swagger == null && openapi == null) {
 					throw new Exception();
-				} else if(openapi == null) {
+				} else if(openapi == null || swagger == null) {
 					swaggerToOpenapi(file);
-				} else if(swagger == null) {
-					saveYaml(content);
-				}
+				} 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,111 +97,11 @@ public class ApiServiceImpl implements ApiService {
 	}
 	
 	@Override
-	public List<ApiSpec> getApiSpec() {
-		//DTO
-		List<ApiSpec> specs = new ArrayList<>();
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(yamlDir);
-			Map yaml = yamlParser.loadAs(fis,Map.class);
-			Map allPath = (Map)yaml.get("paths");
-			Set<String> paths = allPath.keySet();
-			for (String path : paths) {
-				System.out.println(path+": ");
-				Map apiDetails = (Map)allPath.get(path);
-				
-				//DTO
-				ApiSpec spec = new ApiSpec();
-				spec.setPath(path);
-				List<Method> specMethods = new ArrayList<>();
-				
-				Set<String> methods = apiDetails.keySet();
-				for (String method : methods) {
-					System.out.println("\t"+method+": ");
-					Map apiDetail = (Map)apiDetails.get(method);
-					String summary = (String)apiDetail.get("summary");
-					
-					//DTO
-					Method specMethod = new Method();
-					specMethod.setHttpMethod(method);
-					specMethod.setSummary(summary);
-					List<Parameters> specParams = new ArrayList<>();
-					ReqBody specReqBody = new ReqBody();
-					
-					Set<String> keySet = apiDetail.keySet();
-					if(keySet.contains("parameters")) {
-						System.out.println("\t\tparameters: ");
-						
-						
-						List<Map> parameters = (List)apiDetail.get("parameters");
-						for (Map parameter : parameters) {
-							
-							String name = (String)parameter.get("name");
-							String desc = (String)parameter.get("description");
-							boolean required = (boolean)parameter.get("required");
-							Map schema = (Map)parameter.get("schema");
-							String type = (String)schema.get("type");
-							Object defaultVal = schema.get("default");
-							
-							//DTO
-							Parameters specParam = new Parameters();
-							Schema specSchema = new Schema();
-							specSchema.setType(type);
-							specSchema.setDefaultVal(defaultVal);
-							specParam.setName(name);
-							specParam.setDesc(desc);
-							specParam.setRequired(required);
-							specParam.setSchema(specSchema);
-							specParams.add(specParam);
-							
-							System.out.println("\t\t\t"+specParam);
-
-						}
-					}
-					
-					if(keySet.contains("requestBody")) {
-						System.out.println("\t\trequestBody:");
-						Map reqBody = (Map)apiDetail.get("requestBody");
-						boolean required = (boolean)reqBody.get("required");
-						Map contents = (Map)reqBody.get("content");
-						Map content = (Map)contents.get("application/json");
-						String type = null;
-						Object defaultVal = null;
-						if(content != null) {
-							Map schema = (Map)content.get("schema");
-							type = (String)schema.get("type");
-							defaultVal = schema.get("default");
-						}
-						
-						//DTO
-						
-						Content specContent = new Content();
-						Schema specSchema = new Schema();
-						specSchema.setType(type);
-						specSchema.setDefaultVal(defaultVal);
-						specContent.setSchema(specSchema);
-						specReqBody.setRequired(required);
-						specReqBody.setContent(specContent);
-						
-						System.out.println("\t\t\t"+specReqBody);
-					}
-					
-					specMethod.setParameters(specParams);
-					specMethod.setReqBody(specReqBody);
-					specMethods.add(specMethod);
-				}
-				spec.setMethods(specMethods);
-				specs.add(spec);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return specs;
+	public OpenAPI getApiSpec() {
+		OpenAPI model = new OpenAPIV3Parser().read(yamlDir);
+		return model;
 	}
 	
-	/**
-	 * Parameter Defualt값 추가 -> Collection 변환 -> TestScript 추가
-	 */
 	@Override
 	public void yamlToCollection() {
 		String cmd = "openapi2postmanv2 -s "+yamlDir+" -o "+jsonDir;
@@ -226,12 +116,10 @@ public class ApiServiceImpl implements ApiService {
 
 	@Override
 	public void runTest() {
-		FileInputStream fis;
+		OpenAPI model = new OpenAPIV3Parser().read(yamlDir);
+		URI uri;
 		try {
-			fis = new FileInputStream(yamlDir);
-			Map yaml = yamlParser.loadAs(fis, Map.class);
-			List<Map> servers = (List<Map>)yaml.get("servers");
-			URI uri = new URI((String)servers.get(0).get("url"));
+			uri = new URI(model.getServers().get(0).getUrl());
 			StringBuilder url = new StringBuilder("http://");
 			url.append(uri.getHost());
 			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
@@ -239,7 +127,6 @@ public class ApiServiceImpl implements ApiService {
 			System.out.println("url: "+url);
 			String cmd = "newman run "+jsonDir+" --global-var \"baseUrl="+url.toString()+"\"";
 			CLIExecutor.execute(cmd);
-			fis.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
