@@ -152,7 +152,8 @@
 							url: "/apitest",
 							type: "post",
 							data: JSON.stringify(json),
-							dataType:"json",
+							dataType: "json",
+							contentType:"application/json; charset=uft-8",
 							success: function(data){
 								alert("test success!!");
 							}

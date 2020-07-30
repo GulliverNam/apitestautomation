@@ -37,7 +37,8 @@ public class MainController {
 	
 	@PostMapping("/apitest")
 	public OpenAPI upload(@RequestBody OpenAPI model) {
-		System.out.println("Test button is c");
+		System.out.println(model.getOpenapi());
+		System.out.println("Test button is clicked");
 		return model;
 	}
 	
