@@ -73,21 +73,26 @@
 													if(dataType.includes(schemaType)){
 														schemaDetail = ["format", param.schema.format];
 													} else if(schemaType == "array"){
-														schemaDetail = ["items", param.schema.items];
+														schemaDetail = ["items", param.schema.items.type];
 													} else if(schemaType == "object"){
 														schemaDetail = ["properties", param.schema.properties];
 													}
 													
 													newSpac +=`
 														<div class="form-group container">
-															<label for="\${path}-\${httpMethod}-\${param.name}"> 
+															<label for="\${path}-\${httpMethod}-parameters-\${paramIdx}"> 
 																<p>\${param.name} - [\${param.description}] (required: \${param.required})</p>
-																<p>type : \${schemaType}\${schemaDetail[0] == "format" && schemaDetail[1] != null ? "("+schemaDetail[1]+")" : "" }</p>
+																<p>type : \${schemaType}\${(schemaDetail[0] == "format" && schemaDetail[1] != null) ||
+																			 			   (schemaDetail[0] == "items" && schemaDetail[1] != null) ? "("+schemaDetail[1]+")":""}
+																</p>
 															</label>
-															\${schemaDetail[0] == "format" ? 
-															`<input type="text" id="\${path}-\${httpMethod}-\${param.name}" class="form-control" name="\${path}-\${httpMethod}-\${param.name}" value="\${param.schema.default==null? "":param.schema.default}" required="required">`
-															:
-															`<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-\${param.name}" class="form-control" name="\${path}-\${httpMethod}-\${param.name}" required="required">\${JSON.stringify(schemaDetail[1])}</textarea>`
+															\${schemaDetail[0] == "format"? 
+															   `<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" required="required">`
+															   :
+																   schemaDetail[0] == "items"?
+																   `<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" required="required">`
+																   :															
+															   	   `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" required="required">\${JSON.stringify(schemaDetail[1])}</textarea>`
 															}
 															
 														</div>
@@ -108,7 +113,7 @@
 								`;
 								$("#specForm").html(newSpac);
 							}
-						})
+						});
 					}
 				});
 
@@ -132,16 +137,28 @@
 						}
 					});
 					if(validate){
-						form.submit();
+						inputs.forEach(function(input){
+							var defaultPath = input.name.split("-");
+							var defaultLayer = json.paths;
+							
+							console.log("json start!!!");
+							defaultPath.forEach(function(path){
+								console.log(path+"!!");
+								defaultLayer = defaultLayer[path];
+							});
+							defaultLayer.schema.default = input.value;
+						});
+						$.ajax({
+							url: "/apitest",
+							type: "post",
+							data: JSON.stringify(json),
+							dataType:"json",
+							success: function(data){
+								alert("test success!!");
+							}
+						});
 					}
 				});
-				function objectifyForm(formArray) {//serialize data function
-					var returnArray = {};
-					for (var i = 0; i < formArray.length; i++){
-				    	returnArray[formArray[i]['name']] = formArray[i]['value'];
-				  	}
-				  	return returnArray;
-				}
 			});
 		</script>
 	</head>
@@ -157,7 +174,7 @@
 		<div id="apiSpec" class="container p-3 my-3">
 			<div id="fileName">
 			</div>
-			<form id="specForm" action="">
+			<form id="specForm" method="post" action="">
 			</form>
 		</div>
 	</body>

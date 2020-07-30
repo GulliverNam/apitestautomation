@@ -32,8 +32,12 @@ public class MainController {
 	public OpenAPI upload(@RequestParam("apidoc") MultipartFile file) {
 		service.uploadFile(file);
 		OpenAPI model = service.getApiSpec();
-//		service.yamlToCollection();
-//		service.runTest();
+		return model;
+	}
+	
+	@PostMapping("/apitest")
+	public OpenAPI upload(@RequestBody OpenAPI model) {
+		System.out.println("Test button is c");
 		return model;
 	}
 	
