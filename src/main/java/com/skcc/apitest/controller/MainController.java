@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skcc.apitest.service.ApiService;
 
+import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.models.OpenAPI;
 
 @RestController
@@ -37,8 +39,13 @@ public class MainController {
 	
 	@PostMapping("/apitest")
 	public OpenAPI upload(@RequestBody OpenAPI model) {
-		System.out.println(model.getOpenapi());
-		System.out.println("Test button is clicked");
+		try {
+			service.saveYaml(Yaml.pretty().writeValueAsString(model));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		service.yamlToCollection();
+		service.runTest();
 		return model;
 	}
 	

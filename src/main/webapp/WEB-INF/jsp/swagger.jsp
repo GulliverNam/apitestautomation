@@ -58,12 +58,16 @@
 											newSpac += `
 													<h4>\${httpMethod}</h4>
 													<p>\${method.summary}</p>
-													<div class="container">
+													<div class="row">
+														<div class="container col-sm-4">
 											`;
 											
 											var params = method.parameters;
-											var reqBody = method.reqestBody;
+											var reqBody = method.reqestBody; // 미구현
+											var responses = method.responses;
+											
 											console.log(method);
+											/////////// params /////////////
 											if(params != null){
 												newSpac+=`	<h5>params</h5>`;
 												params.forEach(function(param, paramIdx){
@@ -79,30 +83,47 @@
 													}
 													
 													newSpac +=`
-														<div class="form-group container">
-															<label for="\${path}-\${httpMethod}-parameters-\${paramIdx}"> 
-																<p>\${param.name} - [\${param.description}] (required: \${param.required})</p>
-																<p>type : \${schemaType}\${(schemaDetail[0] == "format" && schemaDetail[1] != null) ||
-																			 			   (schemaDetail[0] == "items" && schemaDetail[1] != null) ? "("+schemaDetail[1]+")":""}
-																</p>
-															</label>
-															\${schemaDetail[0] == "format"? 
-															   `<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" required="required">`
-															   :
-																   schemaDetail[0] == "items"?
-																   `<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" required="required">`
-																   :															
-															   	   `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" required="required">\${JSON.stringify(schemaDetail[1])}</textarea>`
-															}
-															
-														</div>
+															<div class="form-group container">
+																<label for="\${path}-\${httpMethod}-parameters-\${paramIdx}"> 
+																	<p>\${param.name} - [\${param.description}] (required: \${param.required})</p>
+																	<p>type : \${schemaType}\${(schemaDetail[0] == "format" && schemaDetail[1] != null) ||
+																				 			   (schemaDetail[0] == "items" && schemaDetail[1] != null) ? "("+schemaDetail[1]+")":""}
+																	</p>
+																</label>
+																\${schemaDetail[0] == "format"? 
+																`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" required="required">`
+																:
+																	schemaDetail[0] == "items"?
+																	`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" required="required">`
+																	:															
+																    `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" required="required">\${JSON.stringify(schemaDetail[1])}</textarea>`
+																}
+															</div>
 													`;
 												});
 											}
-											newSpac+=`		</div>`;
+											newSpac+=`	</div>`;
+											/////////// params end /////////////
+											
+											///////////   responses   /////////////
+											newSpac+=`	<div class="container col-sm-4">
+															<h5>Test Status Code</5>
+															<div class="form-group container"> `;
+											Object.getOwnPropertyNames(responses).forEach(function(statusCode, idx){
+												if((statusCode >= 100 && statusCode <= 599) || statusCode == "default"){
+													newSpac+=`		<input type="radio" id="\${path}-\${httpMethod}-responses-test" name="\${path}-\${httpMethod}-responses-test" value="\${statusCode}" \${idx==0 ? "checked":""}> \${statusCode} `;	
+												}											
+											});
+											newSpac+=`		</div>
+														</div>
+													</div>`;		
+											
+											/////////// responses end /////////////
+											
+											
 										}
 									});
-									newSpac+=`
+									newSpac+=`		
 								  				</div>
 											</div>
 										</div>
@@ -138,15 +159,19 @@
 					});
 					if(validate){
 						inputs.forEach(function(input){
-							var defaultPath = input.name.split("-");
-							var defaultLayer = json.paths;
 							
-							console.log("json start!!!");
-							defaultPath.forEach(function(path){
-								console.log(path+"!!");
-								defaultLayer = defaultLayer[path];
-							});
-							defaultLayer.schema.default = input.value;
+							var defaultPath = input.name.split("-");
+							if(!defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
+								var defaultLayer = json.paths;
+								
+								console.log("json start!!!");
+								defaultPath.forEach(function(path){
+									console.log(path+"!!");
+									defaultLayer = defaultLayer[path];
+								});
+								console.log(defaultLayer);
+								defaultLayer.schema.default = input.value;
+							}
 						});
 						$.ajax({
 							url: "/apitest",
@@ -158,13 +183,14 @@
 								alert("test success!!");
 							}
 						});
+					} else {
+						alert("parameter 값을 입력해 주세요.");
 					}
 				});
 			});
 		</script>
 	</head>
 	<body>
-		
 		<div class="container p-3 my-3" align="center">
 			<h3>명세서 파일을 등록해주세요.(.yaml, .yml, .json)</h3>
 			<form id="fileForm" action="" method="post" enctype="multipart/form-data">

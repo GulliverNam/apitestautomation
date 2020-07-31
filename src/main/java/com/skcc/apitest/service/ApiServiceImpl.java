@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.Yaml;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
@@ -125,7 +126,7 @@ public class ApiServiceImpl implements ApiService {
 			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
 			url.append(uri.getPath());
 			System.out.println("url: "+url);
-			String cmd = "newman run "+jsonDir+" --global-var \"baseUrl="+url.toString()+"\"";
+			String cmd = "newman run "+jsonDir+" --reporters cli,html --reporter-html-export --global-var \"baseUrl="+url.toString()+"\"";
 			CLIExecutor.execute(cmd);
 		} catch (Exception e) {
 			e.printStackTrace();
