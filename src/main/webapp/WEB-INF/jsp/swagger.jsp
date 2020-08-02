@@ -11,7 +11,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				var json = new Object();
+				var paramForm = new Object();
 				
 				$(document).on("click", "#fileUploadBtn", function(){
 					var form = $("#fileForm")[0];
@@ -30,13 +30,13 @@
 							success: function(jsonData){
 								$("#fileName").html(`<h2>\${$("#apidoc").val()}</h2>`);
 								$("#apidoc").val("");
-								json = jsonData;
-								console.log(json);
+								paramForm = jsonData;
+								console.log(paramForm);
 								var httpMethods = ["get", "post", "put", "delete"]; 
 								var newSpac = ``;
 
-								var paths = json.paths;
-								var components = json.components;
+								var paths = paramForm.paths;
+								var components = paramForm.components;
 								Object.getOwnPropertyNames(paths).forEach(function(path, pathIdx){
 									console.log(path+":");
 									newSpac+=`
@@ -111,7 +111,7 @@
 															<div class="form-group container"> `;
 											Object.getOwnPropertyNames(responses).forEach(function(statusCode, idx){
 												if((statusCode >= 100 && statusCode <= 599) || statusCode == "default"){
-													newSpac+=`		<input type="radio" id="\${path}-\${httpMethod}-responses-test" name="\${path}-\${httpMethod}-responses-test" value="\${statusCode}" \${idx==0 ? "checked":""}> \${statusCode} `;	
+													newSpac+=`		<input type="radio" id="\${path}-\${httpMethod}-test" name="\${path}-\${httpMethod}-test" value="\${statusCode}" \${idx==0 ? "checked":""}> \${statusCode} `;	
 												}											
 											});
 											newSpac+=`		</div>
@@ -142,14 +142,16 @@
 					var form = $("#specForm");
 					var inputs = form.serializeArray();
 					var validate = true;
+					var testForm = new Object();
 					console.log(inputs);
 					inputs.some(function(input){
 						var name = input.name;
 						if(input.value == ""){
+							console.log("empty parameter find!!")
 							validate = false;
 							console.log("name: "+name);
 							var inputTag = $("#"+$.escapeSelector(name));
-							var parent = inputTag.parent().parent().parent().parent();
+							var parent = inputTag.parent().parent().parent().parent().parent();
 							console.log("parent: ");
 							console.log(parent);
 							parent.addClass("show");
@@ -161,9 +163,10 @@
 						inputs.forEach(function(input){
 							
 							var defaultPath = input.name.split("-");
-							if(!defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
-								var defaultLayer = json.paths;
-								
+							if(defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
+								testForm[input.name] = input.value;
+							} else {
+								var defaultLayer = paramForm.paths;
 								console.log("json start!!!");
 								defaultPath.forEach(function(path){
 									console.log(path+"!!");
@@ -173,10 +176,11 @@
 								defaultLayer.schema.default = input.value;
 							}
 						});
+						var formJson = {"paramForm": paramForm, "testForm": testForm};
 						$.ajax({
 							url: "/apitest",
 							type: "post",
-							data: JSON.stringify(json),
+							data: JSON.stringify(formJson),
 							dataType: "json",
 							contentType:"application/json; charset=uft-8",
 							success: function(data){

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skcc.apitest.dto.FormDTO;
 import com.skcc.apitest.service.ApiService;
 
 import io.swagger.v3.core.util.Yaml;
@@ -38,15 +39,18 @@ public class MainController {
 	}
 	
 	@PostMapping("/apitest")
-	public OpenAPI upload(@RequestBody OpenAPI model) {
+	public String upload(@RequestBody FormDTO form) {
 		try {
-			service.saveYaml(Yaml.pretty().writeValueAsString(model));
+			service.saveYaml(Yaml.pretty().writeValueAsString(form.getParamForm()));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		service.yamlToCollection();
+		
+		service.addTestScript(form.getTestForm());
+		
 		service.runTest();
-		return model;
+		return "success";
 	}
 	
 }

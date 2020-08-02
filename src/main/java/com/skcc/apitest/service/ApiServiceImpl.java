@@ -13,8 +13,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
+import com.skcc.apitest.dto.EventDTO;
+import com.skcc.apitest.dto.TestScriptDTO;
 import com.skcc.apitest.util.CLIExecutor;
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -25,9 +32,11 @@ public class ApiServiceImpl implements ApiService {
 	
 	String dir = "C:\\apitest";
 	String swaggerDir = dir+"\\swagger\\swagger.json";
-	String yamlDir = dir+"\\yaml\\openapi.yaml";
-	String jsonDir = dir+"\\collection\\collection.json";
+	String openApiDir = dir+"\\yaml\\openapi.yaml";
+	String collectionDir = dir+"\\collection\\collection.json";
 	Yaml yamlParser = new Yaml();
+	
+	
 	@Override
 	@SuppressWarnings("deprecation")
 	public void uploadFile(MultipartFile file) {
@@ -75,7 +84,7 @@ public class ApiServiceImpl implements ApiService {
 			fos.write(file.getBytes());
 			fos.flush();
 			fos.close();
-			String cmd = "swagger2openapi -y -o "+yamlDir+" "+swaggerDir;
+			String cmd = "swagger2openapi -y -o "+openApiDir+" "+swaggerDir;
 			CLIExecutor.execute(cmd);
 			System.out.println("*******swagger converted to Openapi*******");
 		} catch (Exception e) {
@@ -85,7 +94,7 @@ public class ApiServiceImpl implements ApiService {
 	
 	@Override
 	public void saveYaml(String content) {
-		File file = new File(yamlDir);
+		File file = new File(openApiDir);
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(content.getBytes());
@@ -99,25 +108,61 @@ public class ApiServiceImpl implements ApiService {
 	
 	@Override
 	public OpenAPI getApiSpec() {
-		OpenAPI model = new OpenAPIV3Parser().read(yamlDir);
+		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
 		return model;
 	}
 	
 	@Override
 	public void yamlToCollection() {
-		String cmd = "openapi2postmanv2 -s "+yamlDir+" -o "+jsonDir;
+		String cmd = "openapi2postmanv2 -s "+openApiDir+" -o "+collectionDir;
 		CLIExecutor.execute(cmd);
 		System.out.println("*******yaml converted to Json*******");
 	}
 
 	@Override
-	public void addTestScript() {
-		
+	public void addTestScript(Map<String, String> testForm) {
+		JsonElement original;
+		Gson gson = new Gson();
+		try {
+			original = gson.fromJson(new FileReader(collectionDir), JsonElement.class);
+			addEventToCollection(testForm, original.getAsJsonObject().get("item"), "");
+			Writer writer = new FileWriter(collectionDir);
+			gson.toJson(original, writer);
+			writer.close();
+			System.out.println(original);
+			System.out.println("*********test script added*********");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+	
+	public void addEventToCollection(Map<String, String> testForm, JsonElement object, String path) {
+		JsonArray arr = object.getAsJsonArray();
+		for (JsonElement child : arr) {
+			JsonElement item = child.getAsJsonObject().get("item");
+			if(item != null)
+				addEventToCollection(testForm, item, path + "/" + child.getAsJsonObject().get("name").getAsString());
+			else {
+				String method = child.getAsJsonObject().get("request").getAsJsonObject().get("method").getAsString().toLowerCase();
+				String key = path+"-"+method+"-test";
+				String statusCode = testForm.get(key);
+				
+				TestScriptDTO testScript = new TestScriptDTO();
+				testScript.codeCheck(statusCode);
+				EventDTO event = new EventDTO();
+				event.setScript(testScript);
+				JsonElement eventJson = new Gson().toJsonTree(event);
+				
+				JsonElement target = child.getAsJsonObject().get("event");
+				target.getAsJsonArray().add(eventJson);
+			}
+		}
+		return;
+	}
+	
 	@Override
 	public void runTest() {
-		OpenAPI model = new OpenAPIV3Parser().read(yamlDir);
+		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
 		URI uri;
 		try {
 			uri = new URI(model.getServers().get(0).getUrl());
@@ -126,7 +171,7 @@ public class ApiServiceImpl implements ApiService {
 			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
 			url.append(uri.getPath());
 			System.out.println("url: "+url);
-			String cmd = "newman run "+jsonDir+" --reporters cli,html --reporter-html-export --global-var \"baseUrl="+url.toString()+"\"";
+			String cmd = "newman run "+collectionDir+" --reporters cli,html --reporter-html-export --global-var \"baseUrl="+url.toString()+"\"";
 			CLIExecutor.execute(cmd);
 		} catch (Exception e) {
 			e.printStackTrace();
