@@ -171,7 +171,7 @@ public class ApiServiceImpl implements ApiService {
 			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
 			url.append(uri.getPath());
 			System.out.println("url: "+url);
-			String cmd = "newman run "+collectionDir+" --reporters cli,html --reporter-html-export --global-var \"baseUrl="+url.toString()+"\"";
+			String cmd = "newman run "+collectionDir+" --reporters cli,htmlextra,json,json-summary --global-var \"baseUrl="+url.toString()+"\"";
 			CLIExecutor.execute(cmd);
 		} catch (Exception e) {
 			e.printStackTrace();

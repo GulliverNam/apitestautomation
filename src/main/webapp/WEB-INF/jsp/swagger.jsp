@@ -39,37 +39,36 @@
 								var components = paramForm.components;
 								Object.getOwnPropertyNames(paths).forEach(function(path, pathIdx){
 									console.log(path+":");
-									newSpac+=`
-										<div class="container p-1 my-1">
-											<p>
-												<button id="collapseBtn-\${pathIdx}" class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-\${pathIdx}" aria-expanded="false" aria-controls="collapse">
-													\${path}</td>
-												</button>
-											</p>
-											<div class="collapse" id="collapse-\${pathIdx}">
-												<div class="card card-body">
-									`;
+									
 									
 									var operation = paths[path];
 									var httpMethods = ["get", "post", "put", "delete"]; 
-									httpMethods.forEach(function(httpMethod){
+									httpMethods.forEach(function(httpMethod, hmIdx){
 										var method = operation[httpMethod]
 										if(method != null){
-											newSpac += `
-													<h4>\${httpMethod}</h4>
-													<p>\${method.summary}</p>
+											newSpac+=`
+										<div class="container p-1 my-1">
+											<p>
+												<button id="collapseBtn-\${pathIdx}-\${hmIdx}" class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-\${pathIdx}-\${hmIdx}" aria-expanded="false" aria-controls="collapse">
+													<span style="font-size:1.5em;font-weight:bold;">\${path}-\${httpMethod}</span> \${method.summary}
+												</button>
+											</p>
+											<div class="collapse" id="collapse-\${pathIdx}-\${hmIdx}">
+												<div class="card card-body">
 													<div class="row">
-														<div class="container col-sm-4">
 											`;
 											
 											var params = method.parameters;
-											var reqBody = method.reqestBody; // 미구현
+											var reqBody = method.requestBody;
 											var responses = method.responses;
 											
 											console.log(method);
+																						
 											/////////// params /////////////
 											if(params != null){
-												newSpac+=`	<h5>params</h5>`;
+												newSpac+=`	
+														<div class="container col-sm-4">
+															<h5>Parameters</h5>`;
 												params.forEach(function(param, paramIdx){
 													var schemaType = param.schema.type;
 													var dataType = ["string", "integer", "number"];
@@ -85,7 +84,7 @@
 													newSpac +=`
 															<div class="form-group container">
 																<label for="\${path}-\${httpMethod}-parameters-\${paramIdx}"> 
-																	<p>\${param.name} - [\${param.description}] (required: \${param.required})</p>
+																	<p>\${param.required ? "<span style='color:red;'>*</span>":""} \${param.name} - [\${param.description}]</p>
 																	<p>type : \${schemaType}\${(schemaDetail[0] == "format" && schemaDetail[1] != null) ||
 																				 			   (schemaDetail[0] == "items" && schemaDetail[1] != null) ? "("+schemaDetail[1]+")":""}
 																	</p>
@@ -101,14 +100,48 @@
 															</div>
 													`;
 												});
+												newSpac+=`	
+														</div>`;
 											}
-											newSpac+=`	</div>`;
 											/////////// params end /////////////
 											
+											/////////// reqBody /////////////
+											if(reqBody != null){
+												console.log("/////////// reqBody /////////////");
+												newSpac+=`	
+													<div class="container col-sm-4">
+														<h5>Request Body</h5>`;
+												var required = reqBody.required;
+												var desc = reqBody.description;
+												var content = reqBody.content;
+												var type = null;
+												var body = new Object();
+												Object.getOwnPropertyNames(content).forEach(function(contentType){
+													var value = content[contentType];
+													console.log("contentType: "+contentType);
+													type = value.schema.type;
+													var properties = value.schema.properties;
+													console.log("property!!!!! ");
+													Object.getOwnPropertyNames(properties).forEach(function(propKey){
+														var property = properties[propKey];
+														
+														console.log(propKey+": "+property.type);
+														body[propKey] = property.type;
+													});
+												});
+												
+												newSpac+=`
+														<p>\${required ? "<span style='color:red;'>*</span>":""}[\${type}]\${desc != null ? " - "+desc:""}</p>
+														<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-requestBody-content" class="form-control" name="\${path}-\${httpMethod}-requestBody-content" required="required">\${JSON.stringify(body, null, '\t')}</textarea>
+													</div>`;
+												console.log("/////////// reqBody end /////////////");
+											}
+											/////////// reqBody end /////////////
+											
 											///////////   responses   /////////////
-											newSpac+=`	<div class="container col-sm-4">
-															<h5>Test Status Code</5>
-															<div class="form-group container"> `;
+											newSpac+=`	<div class="container col-sm-12">
+															<div class="form-group container"> 
+																<span style="font-weight:bold;">Test Status Code</span> `;
 											Object.getOwnPropertyNames(responses).forEach(function(statusCode, idx){
 												if((statusCode >= 100 && statusCode <= 599) || statusCode == "default"){
 													newSpac+=`		<input type="radio" id="\${path}-\${httpMethod}-test" name="\${path}-\${httpMethod}-test" value="\${statusCode}" \${idx==0 ? "checked":""}> \${statusCode} `;	
@@ -116,18 +149,15 @@
 											});
 											newSpac+=`		</div>
 														</div>
-													</div>`;		
-											
-											/////////// responses end /////////////
-											
-											
-										}
-									});
-									newSpac+=`		
-								  				</div>
+													</div>
+												</div>
 											</div>
 										</div>
-									`;
+											`;
+											/////////// responses end /////////////
+										}
+									});
+											
 								});
 								newSpac+=`
 									<button type="button" class="btn btn-success" id="testBtn">입력</button>
