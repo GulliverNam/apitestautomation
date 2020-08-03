@@ -67,7 +67,7 @@
 											/////////// params /////////////
 											if(params != null){
 												newSpac+=`	
-														<div class="container col-sm-4">
+														<div class="container col-sm-6">
 															<h5>Parameters</h5>`;
 												params.forEach(function(param, paramIdx){
 													var schemaType = param.schema.type;
@@ -109,7 +109,7 @@
 											if(reqBody != null){
 												console.log("/////////// reqBody /////////////");
 												newSpac+=`	
-													<div class="container col-sm-4">
+													<div class="container col-sm-6">
 														<h5>Request Body</h5>`;
 												var required = reqBody.required;
 												var desc = reqBody.description;
@@ -132,7 +132,7 @@
 												
 												newSpac+=`
 														<p>\${required ? "<span style='color:red;'>*</span>":""}[\${type}]\${desc != null ? " - "+desc:""}</p>
-														<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-requestBody-content" class="form-control" name="\${path}-\${httpMethod}-requestBody-content" required="required">\${JSON.stringify(body, null, '\t')}</textarea>
+														<textarea rows="10" cols="10" id="\${path}-\${httpMethod}-requestBody-content" class="form-control" name="\${path}-\${httpMethod}-requestBody-content" required="required">\${JSON.stringify(body, null, '\t')}</textarea>
 													</div>`;
 												console.log("/////////// reqBody end /////////////");
 											}
@@ -141,7 +141,7 @@
 											///////////   responses   /////////////
 											newSpac+=`	<div class="container col-sm-12">
 															<div class="form-group container"> 
-																<span style="font-weight:bold;">Test Status Code</span> `;
+																<span style="font-size:1.3em;">Test Status Code</span> `;
 											Object.getOwnPropertyNames(responses).forEach(function(statusCode, idx){
 												if((statusCode >= 100 && statusCode <= 599) || statusCode == "default"){
 													newSpac+=`		<input type="radio" id="\${path}-\${httpMethod}-test" name="\${path}-\${httpMethod}-test" value="\${statusCode}" \${idx==0 ? "checked":""}> \${statusCode} `;	
@@ -173,6 +173,7 @@
 					var inputs = form.serializeArray();
 					var validate = true;
 					var testForm = new Object();
+					var reqBodyForm = new Object();
 					console.log(inputs);
 					inputs.some(function(input){
 						var name = input.name;
@@ -193,7 +194,10 @@
 						inputs.forEach(function(input){
 							
 							var defaultPath = input.name.split("-");
-							if(defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
+							if(defaultPath.includes("requestBody")){
+								reqBodyForm[input.name] = input.value;
+							}
+							else if(defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
 								testForm[input.name] = input.value;
 							} else {
 								var defaultLayer = paramForm.paths;
@@ -206,7 +210,7 @@
 								defaultLayer.schema.default = input.value;
 							}
 						});
-						var formJson = {"paramForm": paramForm, "testForm": testForm};
+						var formJson = {"paramForm": paramForm, "testForm": testForm, "reqBodyForm": reqBodyForm};
 						$.ajax({
 							url: "/apitest",
 							type: "post",

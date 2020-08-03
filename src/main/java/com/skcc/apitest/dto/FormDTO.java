@@ -10,6 +10,8 @@ import io.swagger.v3.oas.models.OpenAPI;
 public class FormDTO {
 	private OpenAPI paramForm;
 	private Map<String, String> testForm;
+	private Map<String, Object> reqBodyForm;
+	
 	public OpenAPI getParamForm() {
 		return paramForm;
 	}
@@ -22,4 +24,11 @@ public class FormDTO {
 	public void setTestForm(Map<String, String> testForm) {
 		this.testForm = testForm;
 	}
+	public Map<String, Object> getReqBodyForm() {
+		return reqBodyForm;
+	}
+	public void setReqBodyForm(Map<String, Object> reqBodyForm) {
+		this.reqBodyForm = reqBodyForm;
+	}
+	
 }
