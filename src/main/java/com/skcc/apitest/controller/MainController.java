@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,12 +39,14 @@ public class MainController {
 	
 	@PostMapping("/apitest")
 	public String upload(@RequestBody FormDTO form) {
-		try {
-			service.saveYaml(Yaml.pretty().writeValueAsString(form.getParamForm()));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		service.yamlToCollection();
+//		OpenAPI openAPI = form.getOpenAPI();
+//		try {
+//			openAPI = service.correctUrl(openAPI);
+//			service.saveOpenAPI(Yaml.pretty().writeValueAsString(openAPI));
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+		service.openAPIToCollection();
 		
 		service.addTestScript(form.getTestForm());
 		

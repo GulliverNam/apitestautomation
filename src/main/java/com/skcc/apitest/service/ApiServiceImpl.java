@@ -25,6 +25,17 @@ import com.skcc.apitest.dto.TestScriptDTO;
 import com.skcc.apitest.util.CLIExecutor;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
 @Service
@@ -56,7 +67,7 @@ public class ApiServiceImpl implements ApiService {
 				} else if(swagger == null) {
 					JsonNode jsonNode = new ObjectMapper().readTree(content);
 					content = new YAMLMapper().writeValueAsString(jsonNode);
-					saveYaml(content);
+					saveOpenAPI(content);
 				}
 			}
 			else if("yml".equals(extension) || "yaml".equals(extension)) {
@@ -86,37 +97,104 @@ public class ApiServiceImpl implements ApiService {
 			fos.close();
 			String cmd = "swagger2openapi -y -o "+openApiDir+" "+swaggerDir;
 			CLIExecutor.execute(cmd);
-			System.out.println("*******swagger converted to Openapi*******");
+			System.out.println("*******swagger converted to OpenAPI*******");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public void saveYaml(String content) {
+	public void saveOpenAPI(String content) {
 		File file = new File(openApiDir);
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(content.getBytes());
 			fos.flush();
 			fos.close();
-			System.out.println("*******yaml saved*******");
+			System.out.println("*******OpenAPI saved*******");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public OpenAPI getApiSpec() {
-		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
+	public OpenAPI correctUrl(OpenAPI model) {
+		String url = getCorrectUrl(model);
+		model.getServers().get(0).setUrl(url);
 		return model;
 	}
 	
 	@Override
-	public void yamlToCollection() {
+	public OpenAPI getApiSpec() {
+		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
+		Paths paths = model.getPaths();
+		Set<String> pathNames = paths.keySet();
+		Map<String, Schema> refSchema = model.getComponents().getSchemas();
+		retrieveComponentRef(refSchema);
+		for (String pathName : pathNames) {
+			PathItem path = paths.get(pathName);
+			retrievePathsRef(refSchema, path.getGet());
+			retrievePathsRef(refSchema, path.getPost());
+			retrievePathsRef(refSchema, path.getPut());
+			retrievePathsRef(refSchema, path.getDelete());
+		}
+		return model;
+	}
+	public void retrieveComponentRef(Map<String,Schema> refSchema) {
+		Set<String> schemaKeys = refSchema.keySet();
+		for (String schemaKey : schemaKeys) {
+			Map<String, Schema> props = refSchema.get(schemaKey).getProperties();
+			Set<String> propsKeys = props.keySet();
+			for (String propsKey : propsKeys) {
+				Schema prop = props.get(propsKey);
+				if(prop.get$ref() != null){
+					String[] refString = prop.get$ref().split("/");
+					props.put(propsKey, refSchema.get(refString[refString.length - 1]));
+				}
+			}
+		}
+	}
+	
+	public void retrievePathsRef(Map<String, Schema> refSchema, Operation method) {
+		if(method != null) {
+			RequestBody reqBody = method.getRequestBody();
+			if(reqBody != null) {
+				System.out.println("************reqBody************");
+				Content content = reqBody.getContent();
+				Set<String> mediaNames = content.keySet();
+				System.out.println(mediaNames);
+				for (String name : mediaNames) {
+					MediaType mediaType = content.get(name);
+					Schema schema = mediaType.getSchema();
+					String type = schema.getType();
+					if(schema.get$ref() != null) {
+						System.out.println("*****ref*****");
+						System.out.println(schema.get$ref());
+						String[] refString = schema.get$ref().split("/");
+						mediaType.setSchema(refSchema.get(refString[refString.length-1]));
+					} else if(type == "array") {
+						ArraySchema arrSchema = (ArraySchema)schema;
+						if(arrSchema.getItems().get$ref() != null) {
+							String[] refString = arrSchema.getItems().get$ref().split("/");
+							arrSchema.setItems(refSchema.get(refString[refString.length-1]));
+						}
+					}
+				}
+				System.out.println("************reqBody end************");
+			}
+			
+			ApiResponses resps = method.getResponses();
+			
+			List<Parameter> params = method.getParameters();
+			
+		}
+	}
+	
+	@Override
+	public void openAPIToCollection() {
 		String cmd = "openapi2postmanv2 -s "+openApiDir+" -o "+collectionDir;
 		CLIExecutor.execute(cmd);
-		System.out.println("*******yaml converted to Json*******");
+		System.out.println("*******OpenAPI converted to Collection*******");
 	}
 
 	@Override
@@ -134,6 +212,30 @@ public class ApiServiceImpl implements ApiService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void runTest() {
+		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
+		String url = getCorrectUrl(model);
+		System.out.println("url: "+url);
+		String cmd = "newman run "+collectionDir+" --reporters cli,htmlextra,json,json-summary --global-var \"baseUrl="+url.toString()+"\"";
+		CLIExecutor.execute(cmd);
+	}
+	
+	public String getCorrectUrl(OpenAPI model) {
+		URI uri;
+		StringBuilder url = new StringBuilder("http://");
+		try {
+			uri = new URI(model.getServers().get(0).getUrl());
+			url.append(uri.getHost());
+			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
+			url.append(uri.getPath());
+			System.out.println("url: "+url);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return url.toString();
 	}
 	
 	public void addEventToCollection(Map<String, String> testForm, JsonElement object, String path) {
@@ -158,24 +260,6 @@ public class ApiServiceImpl implements ApiService {
 			}
 		}
 		return;
-	}
-	
-	@Override
-	public void runTest() {
-		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
-		URI uri;
-		try {
-			uri = new URI(model.getServers().get(0).getUrl());
-			StringBuilder url = new StringBuilder("http://");
-			url.append(uri.getHost());
-			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
-			url.append(uri.getPath());
-			System.out.println("url: "+url);
-			String cmd = "newman run "+collectionDir+" --reporters cli,htmlextra,json,json-summary --global-var \"baseUrl="+url.toString()+"\"";
-			CLIExecutor.execute(cmd);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

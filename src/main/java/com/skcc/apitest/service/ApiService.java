@@ -11,9 +11,10 @@ public interface ApiService {
 	// 구버전(2.0) -> 신버전(3.0)
 	public void uploadFile(MultipartFile file);
 	public void swaggerToOpenapi(MultipartFile file);
-	public void saveYaml(String doc);
+	public void saveOpenAPI(String doc);
+	public OpenAPI correctUrl(OpenAPI model);
 	public OpenAPI getApiSpec();
-	public void yamlToCollection();
+	public void openAPIToCollection();
 	public void addTestScript(Map<String, String> testForm);
 	public void runTest();
 }

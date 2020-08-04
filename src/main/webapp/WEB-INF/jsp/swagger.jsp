@@ -11,12 +11,13 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				var paramForm = new Object();
-				
+				var openAPI = new Object();
+				var requestBodyJson = new Object;
 				$(document).on("click", "#fileUploadBtn", function(){
 					var form = $("#fileForm")[0];
 					var formData = new FormData(form);
 					var apidoc = $("#apidoc")[0].files[0];
+					
 					if(apidoc == null){
 						alert("파일을 등록해 주세요.");
 					} else {
@@ -30,15 +31,14 @@
 							success: function(jsonData){
 								$("#fileName").html(`<h2>\${$("#apidoc").val()}</h2>`);
 								$("#apidoc").val("");
-								paramForm = jsonData;
-								console.log(paramForm);
+								openAPI = jsonData;
+								console.log(openAPI);
 								var httpMethods = ["get", "post", "put", "delete"]; 
 								var newSpac = ``;
 
-								var paths = paramForm.paths;
-								var components = paramForm.components;
+								var paths = openAPI.paths;
+								var components = openAPI.components;
 								Object.getOwnPropertyNames(paths).forEach(function(path, pathIdx){
-									console.log(path+":");
 									
 									
 									var operation = paths[path];
@@ -46,6 +46,7 @@
 									httpMethods.forEach(function(httpMethod, hmIdx){
 										var method = operation[httpMethod]
 										if(method != null){
+											console.log(path+"-"+httpMethod+":");
 											newSpac+=`
 										<div class="container p-1 my-1">
 											<p>
@@ -80,22 +81,24 @@
 													} else if(schemaType == "object"){
 														schemaDetail = ["properties", param.schema.properties];
 													}
-													
+													if((schemaDetail[0] == "format" && schemaDetail[1] != null) ||
+												 	   (schemaDetail[0] == "items" && schemaDetail[1] != null)){
+											 			schemaType += "("+schemaDetail[1]+")";
+									 			    }
 													newSpac +=`
 															<div class="form-group container">
 																<label for="\${path}-\${httpMethod}-parameters-\${paramIdx}"> 
-																	<p>\${param.required ? "<span style='color:red;'>*</span>":""} \${param.name} - [\${param.description}]</p>
-																	<p>type : \${schemaType}\${(schemaDetail[0] == "format" && schemaDetail[1] != null) ||
-																				 			   (schemaDetail[0] == "items" && schemaDetail[1] != null) ? "("+schemaDetail[1]+")":""}
-																	</p>
+																	<p>\${param.required ? "<span style='color:red;'>*</span>":""} \${param.name} \${schemaType != null ? "["+schemaType+"]":""} - \${param.description}</p>
+																	
 																</label>
+																\${param.required ? "<input name='"+path+"-"+httpMethod+"-parameters-"+paramIdx+"-required' value=true type='hidden' >":""}
 																\${schemaDetail[0] == "format"? 
-																`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" required="required">`
+																`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" \${param.required ? "required='required'":""}>`
 																:
 																	schemaDetail[0] == "items"?
-																	`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" required="required">`
+																	`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" \${param.required ? "required='required'":""}>`
 																	:															
-																    `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" required="required">\${JSON.stringify(schemaDetail[1])}</textarea>`
+																    `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" \${param.required ? "required='required'":""}>\${JSON.stringify(schemaDetail[1])}</textarea>`
 																}
 															</div>
 													`;
@@ -106,6 +109,7 @@
 											/////////// params end /////////////
 											
 											/////////// reqBody /////////////
+											var contentBodies = null;
 											if(reqBody != null){
 												console.log("/////////// reqBody /////////////");
 												newSpac+=`	
@@ -114,28 +118,51 @@
 												var required = reqBody.required;
 												var desc = reqBody.description;
 												var content = reqBody.content;
-												var type = null;
-												var body = new Object();
-												Object.getOwnPropertyNames(content).forEach(function(contentType){
-													var value = content[contentType];
-													console.log("contentType: "+contentType);
-													type = value.schema.type;
-													var properties = value.schema.properties;
-													console.log("property!!!!! ");
+												contentBodies = new Object();
+												Object.getOwnPropertyNames(content).forEach(function(mediaType){
+													var contentBody = new Object();
+													var media = content[mediaType];
+													var type = media.schema.type;
+													var body = new Object();
+													contentBody["type"] = type;
+													console.log("mediaType: "+mediaType);
+
+													var properties = null;
+													if(type == "array"){
+														console.log("array!!!!!");
+														properties = media.schema.items.properties;
+													} else {
+														console.log("object!!!!! ");
+														properties = media.schema.properties;
+													}
 													Object.getOwnPropertyNames(properties).forEach(function(propKey){
 														var property = properties[propKey];
-														
 														console.log(propKey+": "+property.type);
 														body[propKey] = property.type;
 													});
+													contentBody["body"] = body;
+													contentBodies[mediaType] = contentBody;
 												});
 												
 												newSpac+=`
-														<p>\${required ? "<span style='color:red;'>*</span>":""}[\${type}]\${desc != null ? " - "+desc:""}</p>
-														<textarea rows="10" cols="10" id="\${path}-\${httpMethod}-requestBody-content" class="form-control" name="\${path}-\${httpMethod}-requestBody-content" required="required">\${JSON.stringify(body, null, '\t')}</textarea>
+														\${desc != null ? "<p>"+desc+"</p>":""}
+														\${required ? "<span style='color:red;'>*</span>":""}
+														<select id="\${path}-\${httpMethod}-requestBody" name="\${path}-\${httpMethod}-requestBody">
+															<option value="none" selected>=====select=====</option>`;
+												
+												Object.getOwnPropertyNames(contentBodies).forEach(function(mediaType){
+													newSpac+=`
+															<option value="\${mediaType}">\${mediaType}</option>
+														`;
+												});
+												newSpac+=`
+														</select>
+														\${required ? "<input name='"+path+"-"+httpMethod+"-requestBody-content-required' value=true type='hidden' >":""}
+														<textarea rows="10" cols="10" id="\${path}-\${httpMethod}-requestBody-content" class="form-control" name="\${path}-\${httpMethod}-requestBody-content" \${required ? "required='required'":""} ></textarea>
 													</div>`;
 												console.log("/////////// reqBody end /////////////");
 											}
+											requestBodyJson[path+"-"+httpMethod] = contentBodies;
 											/////////// reqBody end /////////////
 											
 											///////////   responses   /////////////
@@ -167,22 +194,41 @@
 						});
 					}
 				});
-
+				$(document).on("change", "select", function(event){
+					var name = event.target.name.split("-");
+					var pathMethod = name[0]+"-"+name[1];
+					var index = event.target.selectedIndex;
+					var mediaType = event.target[index].innerText;
+					var contentName = event.target.name+"-content";
+					if(mediaType != "=====select====="){
+						var body = requestBodyJson[pathMethod][mediaType].body;
+						var type = requestBodyJson[pathMethod][mediaType].type;
+						if(type == "array"){
+							$("textarea[name='"+contentName+"']").text("["+JSON.stringify(body, null, '\t')+"]");
+						} else{
+							$("textarea[name='"+contentName+"']").text(JSON.stringify(body, null, '\t'));
+						}
+					} else{
+						$("textarea[name='"+contentName+"']").text("");
+					}
+					/* \${JSON.stringify(body, null, '\t')} */
+				});
 				$(document).on("click", "#testBtn", function(){
 					var form = $("#specForm");
 					var inputs = form.serializeArray();
 					var validate = true;
 					var testForm = new Object();
 					var reqBodyForm = new Object();
+					var paramForm = new Object();
 					console.log(inputs);
 					inputs.some(function(input){
 						var name = input.name;
-						if(input.value == ""){
+						if(input.value == "" && inputs[name+"-required"] != null){
 							console.log("empty parameter find!!")
 							validate = false;
 							console.log("name: "+name);
 							var inputTag = $("#"+$.escapeSelector(name));
-							var parent = inputTag.parent().parent().parent().parent().parent();
+							var parent = inputTag.closest(".collapse");
 							console.log("parent: ");
 							console.log(parent);
 							parent.addClass("show");
@@ -191,26 +237,33 @@
 						}
 					});
 					if(validate){
+						console.log(inputs);
 						inputs.forEach(function(input){
 							
 							var defaultPath = input.name.split("-");
-							if(defaultPath.includes("requestBody")){
-								reqBodyForm[input.name] = input.value;
-							}
-							else if(defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
-								testForm[input.name] = input.value;
-							} else {
-								var defaultLayer = paramForm.paths;
-								console.log("json start!!!");
-								defaultPath.forEach(function(path){
-									console.log(path+"!!");
-									defaultLayer = defaultLayer[path];
-								});
-								console.log(defaultLayer);
-								defaultLayer.schema.default = input.value;
+							if(!defaultPath.includes("required")){
+								if(defaultPath.includes("requestBody")){
+									reqBodyForm[input.name] = input.value;
+								}
+								else if(defaultPath.includes("test")){ // debug 모드(responses 부분 추가 예정)
+									testForm[input.name] = input.value;
+								} 
+								else if(defaultPath.includes("parameters")){
+									paramForm[input.name] = input.value;
+									/* var defaultLayer = openAPI.paths;
+									console.log("json start!!!");
+									defaultPath.forEach(function(path){
+										console.log(path+"!!");
+										defaultLayer = defaultLayer[path];
+									});
+									console.log(defaultLayer);
+									defaultLayer.schema.default = input.value; */
+								}
 							}
 						});
 						var formJson = {"paramForm": paramForm, "testForm": testForm, "reqBodyForm": reqBodyForm};
+						console.log("----------------------start last ajax----------------------");
+						console.log(formJson);
 						$.ajax({
 							url: "/apitest",
 							type: "post",
