@@ -96,7 +96,7 @@
 																`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${param.schema.default==null? "":param.schema.default}" \${param.required ? "required='required'":""}>`
 																:
 																	schemaDetail[0] == "items"?
-																	`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="[\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}]" \${param.required ? "required='required'":""}>`
+																	`<input type="text" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" value="\${schemaDetail[1]}, \${schemaDetail[1]}, \${schemaDetail[1]}" \${param.required ? "required='required'":""}>`
 																	:															
 																    `<textarea rows="20" cols="50" id="\${path}-\${httpMethod}-parameters-\${paramIdx}" class="form-control" name="\${path}-\${httpMethod}-parameters-\${paramIdx}" \${param.required ? "required='required'":""}>\${JSON.stringify(schemaDetail[1])}</textarea>`
 																}
@@ -249,19 +249,19 @@
 									testForm[input.name] = input.value;
 								} 
 								else if(defaultPath.includes("parameters")){
-									paramForm[input.name] = input.value;
-									/* var defaultLayer = openAPI.paths;
+									//paramForm[input.name] = input.value;
+									var defaultLayer = openAPI.paths;
 									console.log("json start!!!");
 									defaultPath.forEach(function(path){
 										console.log(path+"!!");
 										defaultLayer = defaultLayer[path];
 									});
 									console.log(defaultLayer);
-									defaultLayer.schema.default = input.value; */
+									defaultLayer.schema.default = input.value;
 								}
 							}
 						});
-						var formJson = {"paramForm": paramForm, "testForm": testForm, "reqBodyForm": reqBodyForm};
+						var formJson = {"openAPI": openAPI, "testForm": testForm, "reqBodyForm": reqBodyForm};
 						console.log("----------------------start last ajax----------------------");
 						console.log(formJson);
 						$.ajax({

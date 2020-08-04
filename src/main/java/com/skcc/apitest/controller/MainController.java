@@ -39,13 +39,16 @@ public class MainController {
 	
 	@PostMapping("/apitest")
 	public String upload(@RequestBody FormDTO form) {
-//		OpenAPI openAPI = form.getOpenAPI();
-//		try {
-//			openAPI = service.correctUrl(openAPI);
-//			service.saveOpenAPI(Yaml.pretty().writeValueAsString(openAPI));
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
+		OpenAPI openAPI = form.getOpenAPI();
+		System.out.println("****request body form****");
+		System.out.println(form.getReqBodyForm());
+		try {
+			openAPI = service.correctUrl(openAPI);
+			openAPI = service.setReqBody(openAPI, form.getReqBodyForm());
+			service.saveOpenAPI(Yaml.pretty().writeValueAsString(openAPI));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		service.openAPIToCollection();
 		
 		service.addTestScript(form.getTestForm());

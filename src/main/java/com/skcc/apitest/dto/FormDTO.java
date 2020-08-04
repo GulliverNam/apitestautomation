@@ -8,26 +8,19 @@ import io.swagger.v3.oas.models.OpenAPI;
 
 @Repository
 public class FormDTO {
-//	private OpenAPI openAPI;
-	private Map<String, String> paramForm;
+	private OpenAPI openAPI;
 	private Map<String, String> testForm;
 	private Map<String, Object> reqBodyForm;
 	
-//	public OpenAPI getOpenAPI() {
-//		return openAPI;
-//	}
-//	public void setOpenAPI(OpenAPI openAPI) {
-//		this.openAPI = openAPI;
-//	}
+	public OpenAPI getOpenAPI() {
+		return openAPI;
+	}
+	public void setOpenAPI(OpenAPI openAPI) {
+		this.openAPI = openAPI;
+	}
 	
 	public Map<String, String> getTestForm() {
 		return testForm;
-	}
-	public Map<String, String> getParamForm() {
-		return paramForm;
-	}
-	public void setParamForm(Map<String, String> paramForm) {
-		this.paramForm = paramForm;
 	}
 	public void setTestForm(Map<String, String> testForm) {
 		this.testForm = testForm;

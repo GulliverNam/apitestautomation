@@ -123,33 +123,87 @@ public class ApiServiceImpl implements ApiService {
 		model.getServers().get(0).setUrl(url);
 		return model;
 	}
-	
+	@Override
+	public OpenAPI setReqBody(OpenAPI model, Map<String, Object> reqBodyForm) {
+		Set<String> keySet = reqBodyForm.keySet();
+		for (String key : keySet) {
+			if(!key.contains("content")) {
+				String[] keyString = key.split("-");
+				String pathName = keyString[0];
+				String httpMethod = keyString[1];
+				String mediaType = (String) reqBodyForm.get(key);
+				PathItem path = model.getPaths().get(pathName);
+				Operation op = null;
+				if("get".equals(httpMethod)) {
+					op = path.getGet();
+				} else if("post".equals(httpMethod)) {
+					op = path.getPost();
+				} else if("put".equals(httpMethod)) {
+					op = path.getPut();
+				} else if("delete".equals(httpMethod)) {
+					op = path.getDelete();
+				}
+				Schema schema = op.getRequestBody().getContent().get(mediaType).getSchema();
+				String type = schema.getType();
+				
+				Map<String, String> body = new Gson().fromJson((String) reqBodyForm.get(key+"-content"), Map.class);
+				
+				if("object".equals(type)) {
+					Map<String, Schema> props = schema.getProperties();
+					Set<String> propsKeys = props.keySet();
+					for (String propsKey : propsKeys) {
+						Schema prop = props.get(propsKey);
+						prop.setDefault(body.get(propsKey));
+					}
+					schema.setProperties(props);
+				} else if("array".equals(type)) {
+					
+				}
+				
+			}
+		}
+		System.out.println(model);
+		return model;
+	}
 	@Override
 	public OpenAPI getApiSpec() {
 		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
 		Paths paths = model.getPaths();
 		Set<String> pathNames = paths.keySet();
-		Map<String, Schema> refSchema = model.getComponents().getSchemas();
-		retrieveComponentRef(refSchema);
-		for (String pathName : pathNames) {
-			PathItem path = paths.get(pathName);
-			retrievePathsRef(refSchema, path.getGet());
-			retrievePathsRef(refSchema, path.getPost());
-			retrievePathsRef(refSchema, path.getPut());
-			retrievePathsRef(refSchema, path.getDelete());
+		if(model.getComponents() != null) {
+			Map<String, Schema> refSchema = model.getComponents().getSchemas();
+			retrieveComponentRef(refSchema);
+			for (String pathName : pathNames) {
+				PathItem path = paths.get(pathName);
+				retrievePathsRef(refSchema, path.getGet());
+				retrievePathsRef(refSchema, path.getPost());
+				retrievePathsRef(refSchema, path.getPut());
+				retrievePathsRef(refSchema, path.getDelete());
+			}
 		}
 		return model;
 	}
-	public void retrieveComponentRef(Map<String,Schema> refSchema) {
-		Set<String> schemaKeys = refSchema.keySet();
+	public void retrieveComponentRef(Map<String,Schema> refSchemas) {
+		Set<String> schemaKeys = refSchemas.keySet();
 		for (String schemaKey : schemaKeys) {
-			Map<String, Schema> props = refSchema.get(schemaKey).getProperties();
-			Set<String> propsKeys = props.keySet();
-			for (String propsKey : propsKeys) {
-				Schema prop = props.get(propsKey);
-				if(prop.get$ref() != null){
-					String[] refString = prop.get$ref().split("/");
-					props.put(propsKey, refSchema.get(refString[refString.length - 1]));
+			Schema schema = refSchemas.get(schemaKey);
+			String type = schema.getType();
+			if("array".equals(type)) {
+				ArraySchema arrSchema = (ArraySchema) schema;
+				Schema<?> items = arrSchema.getItems();
+				if(items.get$ref() != null) {
+					String[] refString = items.get$ref().split("/");
+					arrSchema.setItems(refSchemas.get(refString[refString.length - 1]));
+				}
+			}else if("object".equals(type)) {
+				Map<String, Schema> props = schema.getProperties();
+				Set<String> propsKeys = props.keySet();
+				for (String propsKey : propsKeys) {
+					Schema prop = props.get(propsKey);
+					if(prop.get$ref() != null){
+						String[] refString = prop.get$ref().split("/");
+						props.put(propsKey, refSchemas.get(refString[refString.length - 1]));
+					}
 				}
 			}
 		}

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.converter.SwaggerConverter;
 import io.swagger.v3.parser.util.RefUtils;
 
 public class OpenApiParser {

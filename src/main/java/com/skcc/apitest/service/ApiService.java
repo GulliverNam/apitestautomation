@@ -13,6 +13,7 @@ public interface ApiService {
 	public void swaggerToOpenapi(MultipartFile file);
 	public void saveOpenAPI(String doc);
 	public OpenAPI correctUrl(OpenAPI model);
+	public OpenAPI setReqBody(OpenAPI model, Map<String, Object> reqBodyForm);
 	public OpenAPI getApiSpec();
 	public void openAPIToCollection();
 	public void addTestScript(Map<String, String> testForm);

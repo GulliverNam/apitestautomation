@@ -1,0 +1,4247 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "cae6dffd-b67d-4f71-ac0e-5284b614e918"
+    },
+    "item": [
+      {
+        "id": "1b8a2b8a-32da-49ab-9842-086b7d2b6310",
+        "name": "board",
+        "item": [
+          {
+            "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+            "name": "모든 게시물을 가져옴",
+            "request": {
+              "name": "모든 게시물을 가져옴",
+              "description": {
+                "content": "모든 게시물을 가져옴",
+                "type": "text/plain"
+              },
+              "url": {
+                "path": [
+                  "board"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "method": "GET"
+            },
+            "response": [
+              {
+                "_": {
+                  "postman_previewlanguage": "json"
+                },
+                "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+                "name": "모든 게시물의 리스트",
+                "originalRequest": {
+                  "url": {
+                    "path": [
+                      "board"
+                    ],
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                  },
+                  "method": "GET",
+                  "body": {}
+                },
+                "status": "OK",
+                "code": 200,
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": "[]",
+                "cookie": []
+              }
+            ],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                  ],
+                  "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+                }
+              }
+            ]
+          },
+          {
+            "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+            "name": "게시물등록",
+            "request": {
+              "name": "게시물등록",
+              "description": {
+                "content": "게시물등록",
+                "type": "text/plain"
+              },
+              "url": {
+                "path": [
+                  "board"
+                ],
+                "host": [
+                  "{{baseUrl}}"
+                ],
+                "query": [],
+                "variable": []
+              },
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "method": "POST",
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+              }
+            },
+            "response": [
+              {
+                "_": {
+                  "postman_previewlanguage": "json"
+                },
+                "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+                "name": "모든 게시물의 리스트",
+                "originalRequest": {
+                  "url": {
+                    "path": [
+                      "board"
+                    ],
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": []
+                  },
+                  "method": "POST",
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": "[]",
+                "cookie": []
+              }
+            ],
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                  ],
+                  "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+                }
+              }
+            ]
+          },
+          {
+            "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+            "name": "{id}",
+            "item": [
+              {
+                "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+                "name": "게시물 수정",
+                "request": {
+                  "name": "게시물 수정",
+                  "description": {
+                    "type": "text/plain"
+                  },
+                  "url": {
+                    "path": [
+                      "board",
+                      ":id"
+                    ],
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": [
+                      {
+                        "description": {
+                          "content": "(Required) 수정할 게시물의 id",
+                          "type": "text/plain"
+                        },
+                        "type": "any",
+                        "value": "5",
+                        "key": "id"
+                      }
+                    ]
+                  },
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "method": "PUT",
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                  }
+                },
+                "response": [
+                  {
+                    "_": {
+                      "postman_previewlanguage": "json"
+                    },
+                    "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                    "name": "created",
+                    "originalRequest": {
+                      "url": {
+                        "path": [
+                          "board",
+                          ":id"
+                        ],
+                        "host": [
+                          "{{baseUrl}}"
+                        ],
+                        "query": [],
+                        "variable": [
+                          {
+                            "type": "any",
+                            "key": "id"
+                          }
+                        ]
+                      },
+                      "method": "PUT",
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                      }
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                    "cookie": []
+                  }
+                ],
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                      ],
+                      "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+                "name": "게시물 삭제",
+                "request": {
+                  "name": "게시물 삭제",
+                  "description": {
+                    "type": "text/plain"
+                  },
+                  "url": {
+                    "path": [
+                      "board",
+                      ":id"
+                    ],
+                    "host": [
+                      "{{baseUrl}}"
+                    ],
+                    "query": [],
+                    "variable": [
+                      {
+                        "description": {
+                          "content": "(Required) 수정할 게시물의 id",
+                          "type": "text/plain"
+                        },
+                        "type": "any",
+                        "value": "6",
+                        "key": "id"
+                      }
+                    ]
+                  },
+                  "method": "DELETE"
+                },
+                "response": [
+                  {
+                    "_": {
+                      "postman_previewlanguage": "json"
+                    },
+                    "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                    "name": "created",
+                    "originalRequest": {
+                      "url": {
+                        "path": [
+                          "board",
+                          ":id"
+                        ],
+                        "host": [
+                          "{{baseUrl}}"
+                        ],
+                        "query": [],
+                        "variable": [
+                          {
+                            "type": "any",
+                            "key": "id"
+                          }
+                        ]
+                      },
+                      "method": "DELETE",
+                      "body": {}
+                    },
+                    "status": "OK",
+                    "code": 200,
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": "false",
+                    "cookie": []
+                  }
+                ],
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                      "type": "text/javascript",
+                      "exec": [
+                        "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                      ],
+                      "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                    }
+                  }
+                ]
+              }
+            ],
+            "event": []
+          }
+        ],
+        "event": []
+      }
+    ],
+    "event": [],
+    "variable": [
+      {
+        "id": "baseUrl",
+        "type": "string",
+        "value": "http://127.0.0.1:8091/demo"
+      }
+    ],
+    "info": {
+      "_postman_id": "cae6dffd-b67d-4f71-ac0e-5284b614e918",
+      "name": "demo API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": {
+        "content": "demom API",
+        "type": "text/plain"
+      }
+    }
+  },
+  "environment": {
+    "id": "e7e3fcf0-d972-4903-92c1-f77fb9fa4fbe",
+    "values": []
+  },
+  "globals": {
+    "id": "74ec09f3-ca5c-4c14-9df5-dd0c07aff3b9",
+    "values": [
+      {
+        "type": "any",
+        "value": "http://127.0.0.1:8091/demo",
+        "key": "baseUrl"
+      }
+    ]
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 4
+      },
+      "tests": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 4,
+        "pending": 0,
+        "failed": 4
+      },
+      "testScripts": {
+        "total": 4,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 0,
+      "responseMin": 0,
+      "responseMax": 0,
+      "responseSd": 0,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1596558233281,
+      "completed": 1596558241451
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 4,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "ec1badfc-7e04-495d-9f00-92d86fec21a1",
+          "httpRequestId": "907b112a-e125-4c9a-a6cf-372050fe1c49"
+        },
+        "item": {
+          "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+          "name": "모든 게시물을 가져옴",
+          "request": {
+            "name": "모든 게시물을 가져옴",
+            "description": {
+              "content": "모든 게시물을 가져옴",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+              }
+            }
+          ]
+        },
+        "request": {
+          "name": "모든 게시물을 가져옴",
+          "description": {
+            "content": "모든 게시물을 가져옴",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8091",
+            "path": [
+              "demo",
+              "board"
+            ],
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.26.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c6441504-19f9-4d43-b7b2-da277fb395b0",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8091",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+        "requestError": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091
+        },
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)"
+            }
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "70b2bb36-911d-4e61-8e2f-e0443286ac31",
+          "length": 4,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "a5bb615b-b0d4-46d4-b95a-78af5d82fad7"
+        },
+        "item": {
+          "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+          "name": "게시물등록",
+          "request": {
+            "name": "게시물등록",
+            "description": {
+              "content": "게시물등록",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+              }
+            }
+          ]
+        },
+        "request": {
+          "name": "게시물등록",
+          "description": {
+            "content": "게시물등록",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8091",
+            "path": [
+              "demo",
+              "board"
+            ],
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.26.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "047af7c5-d117-4f0c-a2b3-3167b22790fc",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8091",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+          }
+        },
+        "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+        "requestError": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091
+        },
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:2)"
+            }
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "9c9b486f-f0e4-4f35-a00f-dfaa8e87930b",
+          "length": 4,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "c5390a4a-a1e6-48a0-ac85-7cbcf23c7bdd"
+        },
+        "item": {
+          "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+          "name": "게시물 수정",
+          "request": {
+            "name": "게시물 수정",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "5",
+                  "key": "id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+              }
+            }
+          ]
+        },
+        "request": {
+          "name": "게시물 수정",
+          "description": {
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8091",
+            "path": [
+              "demo",
+              "board",
+              "5"
+            ],
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.26.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "436f575c-12a2-46b5-a3a6-90ea14987f07",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8091",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+          }
+        },
+        "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+        "requestError": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091
+        },
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:3)"
+            }
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "278890ea-fd96-47ca-a28a-828904cc1176",
+          "length": 4,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "fd196aff-d932-49e2-bd32-f7ed6a5187c1"
+        },
+        "item": {
+          "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+          "name": "게시물 삭제",
+          "request": {
+            "name": "게시물 삭제",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "6",
+                  "key": "id"
+                }
+              ]
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "false",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+              }
+            }
+          ]
+        },
+        "request": {
+          "name": "게시물 삭제",
+          "description": {
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8091",
+            "path": [
+              "demo",
+              "board",
+              "6"
+            ],
+            "host": [
+              "127",
+              "0",
+              "0",
+              "1"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.26.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "cd808ed1-4296-4b5b-8d20-7adb3bb7759f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "127.0.0.1:8091",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "DELETE"
+        },
+        "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+        "requestError": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091
+        },
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false,
+            "error": {
+              "name": "AssertionError",
+              "index": 0,
+              "test": "Status code is 200",
+              "message": "expected { Object (id, _details, ...) } to have property 'code'",
+              "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:4)"
+            }
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 0
+    },
+    "failures": [
+      {
+        "error": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091,
+          "name": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:8091",
+          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8091\n    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)",
+          "checksum": "b622603cee2483a46740647c1e8189e6",
+          "id": "02ef9573-31ed-453d-b574-51f1591d1ca4",
+          "timestamp": 1596558235339,
+          "stacktrace": [
+            {
+              "fileName": "net.js",
+              "lineNumber": 1141,
+              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
+              "typeName": "TCPConnectWrap",
+              "methodName": "afterConnect [as oncomplete]",
+              "columnNumber": 16,
+              "native": false
+            }
+          ]
+        },
+        "at": "request",
+        "source": {
+          "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+          "name": "모든 게시물을 가져옴",
+          "request": {
+            "name": "모든 게시물을 가져옴",
+            "description": {
+              "content": "모든 게시물을 가져옴",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "1b8a2b8a-32da-49ab-9842-086b7d2b6310",
+          "name": "board",
+          "item": [
+            {
+              "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+              "name": "모든 게시물을 가져옴",
+              "request": {
+                "name": "모든 게시물을 가져옴",
+                "description": {
+                  "content": "모든 게시물을 가져옴",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+              "name": "게시물등록",
+              "request": {
+                "name": "게시물등록",
+                "description": {
+                  "content": "게시물등록",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+              "name": "{id}",
+              "item": [
+                {
+                  "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+                  "name": "게시물 수정",
+                  "request": {
+                    "name": "게시물 수정",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "5",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+                  "name": "게시물 삭제",
+                  "request": {
+                    "name": "게시물 삭제",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "6",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE"
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "false",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 4,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "ec1badfc-7e04-495d-9f00-92d86fec21a1",
+          "httpRequestId": "907b112a-e125-4c9a-a6cf-372050fe1c49"
+        }
+      },
+      {
+        "error": {
+          "name": "AssertionError",
+          "index": 0,
+          "test": "Status code is 200",
+          "message": "expected { Object (id, _details, ...) } to have property 'code'",
+          "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:1)",
+          "checksum": "b149b18033a9c325e37d8773a6bd75c3",
+          "id": "8ec1551c-76d1-4c55-997f-991db0c79a96",
+          "timestamp": 1596558235366,
+          "stacktrace": [
+            {
+              "fileName": "sandbox-script.js",
+              "lineNumber": 1,
+              "functionName": "Object.eval",
+              "typeName": "Object",
+              "methodName": "eval",
+              "columnNumber": 1,
+              "native": false
+            }
+          ]
+        },
+        "at": "assertion:0 in test-script",
+        "source": {
+          "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+          "name": "모든 게시물을 가져옴",
+          "request": {
+            "name": "모든 게시물을 가져옴",
+            "description": {
+              "content": "모든 게시물을 가져옴",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "1b8a2b8a-32da-49ab-9842-086b7d2b6310",
+          "name": "board",
+          "item": [
+            {
+              "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+              "name": "모든 게시물을 가져옴",
+              "request": {
+                "name": "모든 게시물을 가져옴",
+                "description": {
+                  "content": "모든 게시물을 가져옴",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+              "name": "게시물등록",
+              "request": {
+                "name": "게시물등록",
+                "description": {
+                  "content": "게시물등록",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+              "name": "{id}",
+              "item": [
+                {
+                  "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+                  "name": "게시물 수정",
+                  "request": {
+                    "name": "게시물 수정",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "5",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+                  "name": "게시물 삭제",
+                  "request": {
+                    "name": "게시물 삭제",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "6",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE"
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "false",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 4,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "ec1badfc-7e04-495d-9f00-92d86fec21a1",
+          "httpRequestId": "907b112a-e125-4c9a-a6cf-372050fe1c49",
+          "scriptId": "a1ccba0d-113c-489a-bada-94fa69a56251",
+          "execution": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+        }
+      },
+      {
+        "error": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091,
+          "name": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:8091",
+          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8091\n    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)",
+          "checksum": "b622603cee2483a46740647c1e8189e6",
+          "id": "d0869c5f-e8dc-44b0-a915-107248241f1e",
+          "timestamp": 1596558237392,
+          "stacktrace": [
+            {
+              "fileName": "net.js",
+              "lineNumber": 1141,
+              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
+              "typeName": "TCPConnectWrap",
+              "methodName": "afterConnect [as oncomplete]",
+              "columnNumber": 16,
+              "native": false
+            }
+          ]
+        },
+        "at": "request",
+        "source": {
+          "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+          "name": "게시물등록",
+          "request": {
+            "name": "게시물등록",
+            "description": {
+              "content": "게시물등록",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "1b8a2b8a-32da-49ab-9842-086b7d2b6310",
+          "name": "board",
+          "item": [
+            {
+              "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+              "name": "모든 게시물을 가져옴",
+              "request": {
+                "name": "모든 게시물을 가져옴",
+                "description": {
+                  "content": "모든 게시물을 가져옴",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+              "name": "게시물등록",
+              "request": {
+                "name": "게시물등록",
+                "description": {
+                  "content": "게시물등록",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+              "name": "{id}",
+              "item": [
+                {
+                  "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+                  "name": "게시물 수정",
+                  "request": {
+                    "name": "게시물 수정",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "5",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+                  "name": "게시물 삭제",
+                  "request": {
+                    "name": "게시물 삭제",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "6",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE"
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "false",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "70b2bb36-911d-4e61-8e2f-e0443286ac31",
+          "length": 4,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "a5bb615b-b0d4-46d4-b95a-78af5d82fad7"
+        }
+      },
+      {
+        "error": {
+          "name": "AssertionError",
+          "index": 0,
+          "test": "Status code is 200",
+          "message": "expected { Object (id, _details, ...) } to have property 'code'",
+          "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:2)",
+          "checksum": "a412680c8047933fc8ce5a913f89c3c2",
+          "id": "6ad2650c-66b5-49e9-b8a7-5a2a474c8eaa",
+          "timestamp": 1596558237398,
+          "stacktrace": [
+            {
+              "fileName": "sandbox-script.js",
+              "lineNumber": 1,
+              "functionName": "Object.eval",
+              "typeName": "Object",
+              "methodName": "eval",
+              "columnNumber": 2,
+              "native": false
+            }
+          ]
+        },
+        "at": "assertion:0 in test-script",
+        "source": {
+          "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+          "name": "게시물등록",
+          "request": {
+            "name": "게시물등록",
+            "description": {
+              "content": "게시물등록",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+              "name": "모든 게시물의 리스트",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "1b8a2b8a-32da-49ab-9842-086b7d2b6310",
+          "name": "board",
+          "item": [
+            {
+              "id": "73d6a187-875d-4f91-9bc9-0fd4eb325bb0",
+              "name": "모든 게시물을 가져옴",
+              "request": {
+                "name": "모든 게시물을 가져옴",
+                "description": {
+                  "content": "모든 게시물을 가져옴",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "d1025a20-940c-4698-9a5b-45ceb7bccb94",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a1ccba0d-113c-489a-bada-94fa69a56251",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "4ee86b7f-e71a-486d-a95c-4e1b40f66f37"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "55127440-4b2d-4cee-a329-0a3f30c8d68d",
+              "name": "게시물등록",
+              "request": {
+                "name": "게시물등록",
+                "description": {
+                  "content": "게시물등록",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "57ae2bc0-ca97-442e-867e-8dfedb83abb7",
+                  "name": "모든 게시물의 리스트",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"11111111111111\",\n    \"content\": \"s11111111111\",\n    \"name\": \"st222222222\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "[]",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+              "name": "{id}",
+              "item": [
+                {
+                  "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+                  "name": "게시물 수정",
+                  "request": {
+                    "name": "게시물 수정",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "5",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+                  "name": "게시물 삭제",
+                  "request": {
+                    "name": "게시물 삭제",
+                    "description": {
+                      "type": "text/plain"
+                    },
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "description": {
+                            "content": "(Required) 수정할 게시물의 id",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "6",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE"
+                  },
+                  "response": [
+                    {
+                      "_": {
+                        "postman_previewlanguage": "json"
+                      },
+                      "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                      "name": "created",
+                      "originalRequest": {
+                        "url": {
+                          "path": [
+                            "board",
+                            ":id"
+                          ],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "query": [],
+                          "variable": [
+                            {
+                              "type": "any",
+                              "key": "id"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "body": {}
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": "false",
+                      "cookie": []
+                    }
+                  ],
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                        ],
+                        "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "70b2bb36-911d-4e61-8e2f-e0443286ac31",
+          "length": 4,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "a5bb615b-b0d4-46d4-b95a-78af5d82fad7",
+          "scriptId": "707803ca-4e50-43f9-b1e7-385ecca4e571",
+          "execution": "918bfcc4-be67-42a7-93a0-779d5d31f6dc"
+        }
+      },
+      {
+        "error": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091,
+          "name": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:8091",
+          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8091\n    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)",
+          "checksum": "b622603cee2483a46740647c1e8189e6",
+          "id": "264d2a2b-3db1-4b5f-b7d3-930978cfc570",
+          "timestamp": 1596558239416,
+          "stacktrace": [
+            {
+              "fileName": "net.js",
+              "lineNumber": 1141,
+              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
+              "typeName": "TCPConnectWrap",
+              "methodName": "afterConnect [as oncomplete]",
+              "columnNumber": 16,
+              "native": false
+            }
+          ]
+        },
+        "at": "request",
+        "source": {
+          "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+          "name": "게시물 수정",
+          "request": {
+            "name": "게시물 수정",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "5",
+                  "key": "id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+          "name": "{id}",
+          "item": [
+            {
+              "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+              "name": "게시물 수정",
+              "request": {
+                "name": "게시물 수정",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "5",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+              "name": "게시물 삭제",
+              "request": {
+                "name": "게시물 삭제",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "6",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "false",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                  }
+                }
+              ]
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "9c9b486f-f0e4-4f35-a00f-dfaa8e87930b",
+          "length": 4,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "c5390a4a-a1e6-48a0-ac85-7cbcf23c7bdd"
+        }
+      },
+      {
+        "error": {
+          "name": "AssertionError",
+          "index": 0,
+          "test": "Status code is 200",
+          "message": "expected { Object (id, _details, ...) } to have property 'code'",
+          "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:3)",
+          "checksum": "bd291fd6636fa58b6be1d6a9c5c383ff",
+          "id": "ed1be8d6-b082-41e6-821d-78e02011ff6f",
+          "timestamp": 1596558239424,
+          "stacktrace": [
+            {
+              "fileName": "sandbox-script.js",
+              "lineNumber": 1,
+              "functionName": "Object.eval",
+              "typeName": "Object",
+              "methodName": "eval",
+              "columnNumber": 3,
+              "native": false
+            }
+          ]
+        },
+        "at": "assertion:0 in test-script",
+        "source": {
+          "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+          "name": "게시물 수정",
+          "request": {
+            "name": "게시물 수정",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "5",
+                  "key": "id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+            }
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+          "name": "{id}",
+          "item": [
+            {
+              "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+              "name": "게시물 수정",
+              "request": {
+                "name": "게시물 수정",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "5",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+              "name": "게시물 삭제",
+              "request": {
+                "name": "게시물 삭제",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "6",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "false",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                  }
+                }
+              ]
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "9c9b486f-f0e4-4f35-a00f-dfaa8e87930b",
+          "length": 4,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "c5390a4a-a1e6-48a0-ac85-7cbcf23c7bdd",
+          "scriptId": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+          "execution": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+        }
+      },
+      {
+        "error": {
+          "errno": "ECONNREFUSED",
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 8091,
+          "name": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:8091",
+          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8091\n    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)",
+          "checksum": "b622603cee2483a46740647c1e8189e6",
+          "id": "31a74f13-8f37-4add-a250-8eae5b0c9e80",
+          "timestamp": 1596558241439,
+          "stacktrace": [
+            {
+              "fileName": "net.js",
+              "lineNumber": 1141,
+              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
+              "typeName": "TCPConnectWrap",
+              "methodName": "afterConnect [as oncomplete]",
+              "columnNumber": 16,
+              "native": false
+            }
+          ]
+        },
+        "at": "request",
+        "source": {
+          "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+          "name": "게시물 삭제",
+          "request": {
+            "name": "게시물 삭제",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "6",
+                  "key": "id"
+                }
+              ]
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "false",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+          "name": "{id}",
+          "item": [
+            {
+              "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+              "name": "게시물 수정",
+              "request": {
+                "name": "게시물 수정",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "5",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+              "name": "게시물 삭제",
+              "request": {
+                "name": "게시물 삭제",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "6",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "false",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                  }
+                }
+              ]
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "278890ea-fd96-47ca-a28a-828904cc1176",
+          "length": 4,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "fd196aff-d932-49e2-bd32-f7ed6a5187c1"
+        }
+      },
+      {
+        "error": {
+          "name": "AssertionError",
+          "index": 0,
+          "test": "Status code is 200",
+          "message": "expected { Object (id, _details, ...) } to have property 'code'",
+          "stack": "AssertionError: expected { Object (id, _details, ...) } to have property 'code'\n   at Object.eval sandbox-script.js:1:4)",
+          "checksum": "c61b79a143b5f8899a9762ad2c369493",
+          "id": "c6a190d9-20b0-4a10-857a-ca7d42153646",
+          "timestamp": 1596558241445,
+          "stacktrace": [
+            {
+              "fileName": "sandbox-script.js",
+              "lineNumber": 1,
+              "functionName": "Object.eval",
+              "typeName": "Object",
+              "methodName": "eval",
+              "columnNumber": 4,
+              "native": false
+            }
+          ]
+        },
+        "at": "assertion:0 in test-script",
+        "source": {
+          "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+          "name": "게시물 삭제",
+          "request": {
+            "name": "게시물 삭제",
+            "description": {
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "board",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "(Required) 수정할 게시물의 id",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "6",
+                  "key": "id"
+                }
+              ]
+            },
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+              "name": "created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "false",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                ],
+                "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "id": "b6fe6174-14a2-40c7-879f-735ac8e1fc71",
+          "name": "{id}",
+          "item": [
+            {
+              "id": "014c08a0-deb5-4873-802c-1e40850f8ce5",
+              "name": "게시물 수정",
+              "request": {
+                "name": "게시물 수정",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "5",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                }
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "5c2ed5c4-4a8d-4443-a890-be6c5db46105",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"5555555555555555\",\n    \"content\": \"555555555555555\",\n    \"name\": \"55555555555555555\"\n}"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n \"title\": \"velit aliqua ipsum\",\n \"content\": \"veniam nisi sed\",\n \"name\": \"commodo ex\"\n}",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7df2ed1f-dbb2-4292-acf0-b4adc1b9dbad",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "6c5172bb-608e-45c3-9527-f634e4a6bea0"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "72b9e223-9984-4567-8dcf-379c5d81e0cf",
+              "name": "게시물 삭제",
+              "request": {
+                "name": "게시물 삭제",
+                "description": {
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "board",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "(Required) 수정할 게시물의 id",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "6",
+                      "key": "id"
+                    }
+                  ]
+                },
+                "method": "DELETE"
+              },
+              "response": [
+                {
+                  "_": {
+                    "postman_previewlanguage": "json"
+                  },
+                  "id": "e8f9905d-e6fa-48d1-a6c9-867d1a3daa4a",
+                  "name": "created",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "board",
+                        ":id"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "type": "any",
+                          "key": "id"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "false",
+                  "cookie": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {pm.response.to.have.status(200);});"
+                    ],
+                    "_lastExecutionId": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+                  }
+                }
+              ]
+            }
+          ],
+          "event": []
+        },
+        "cursor": {
+          "ref": "278890ea-fd96-47ca-a28a-828904cc1176",
+          "length": 4,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "fd196aff-d932-49e2-bd32-f7ed6a5187c1",
+          "scriptId": "6923d332-b562-43eb-bb2d-d59c6675fc22",
+          "execution": "a7a6af40-2d1b-406d-8488-30df47a28e43"
+        }
+      }
+    ],
+    "error": null
+  }
+}
