@@ -247,19 +247,21 @@ public class ApiServiceImpl implements ApiService {
 			/**** Request Body ref 처리 ****/
 			if(reqBody != null) {
 				Content content = reqBody.getContent();
-				Set<String> mediaNames = content.keySet();
-				for (String name : mediaNames) {
-					MediaType mediaType = content.get(name);
-					Schema schema = mediaType.getSchema();
-					String type = schema.getType();
-					if(schema.get$ref() != null) {
-						String[] refString = schema.get$ref().split("/");
-						mediaType.setSchema(refSchema.get(refString[refString.length-1]));
-					} else if(type == "array") {
-						ArraySchema arrSchema = (ArraySchema)schema;
-						if(arrSchema.getItems().get$ref() != null) {
-							String[] refString = arrSchema.getItems().get$ref().split("/");
-							arrSchema.setItems(refSchema.get(refString[refString.length-1]));
+				if(content != null) {
+					Set<String> mediaNames = content.keySet();
+					for (String name : mediaNames) {
+						MediaType mediaType = content.get(name);
+						Schema schema = mediaType.getSchema();
+						String type = schema.getType();
+						if(schema.get$ref() != null) {
+							String[] refString = schema.get$ref().split("/");
+							mediaType.setSchema(refSchema.get(refString[refString.length-1]));
+						} else if(type == "array") {
+							ArraySchema arrSchema = (ArraySchema)schema;
+							if(arrSchema.getItems().get$ref() != null) {
+								String[] refString = arrSchema.getItems().get$ref().split("/");
+								arrSchema.setItems(refSchema.get(refString[refString.length-1]));
+							}
 						}
 					}
 				}

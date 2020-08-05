@@ -119,30 +119,32 @@
 												var desc = reqBody.description;
 												var content = reqBody.content;
 												contentBodies = new Object();
-												Object.getOwnPropertyNames(content).forEach(function(mediaType){
-													var contentBody = new Object();
-													var media = content[mediaType];
-													var type = media.schema.type;
-													var body = new Object();
-													contentBody["type"] = type;
-													console.log("mediaType: "+mediaType);
-
-													var properties = null;
-													if(type == "array"){
-														console.log("array!!!!!");
-														properties = media.schema.items.properties;
-													} else {
-														console.log("object!!!!! ");
-														properties = media.schema.properties;
-													}
-													Object.getOwnPropertyNames(properties).forEach(function(propKey){
-														var property = properties[propKey];
-														console.log(propKey+": "+property.type);
-														body[propKey] = property.type;
+												if(content != null){
+													Object.getOwnPropertyNames(content).forEach(function(mediaType){
+														var contentBody = new Object();
+														var media = content[mediaType];
+														var type = media.schema.type;
+														var body = new Object();
+														contentBody["type"] = type;
+														console.log("mediaType: "+mediaType);
+	
+														var properties = null;
+														if(type == "array"){
+															console.log("array!!!!!");
+															properties = media.schema.items.properties;
+														} else {
+															console.log("object!!!!! ");
+															properties = media.schema.properties;
+														}
+														Object.getOwnPropertyNames(properties).forEach(function(propKey){
+															var property = properties[propKey];
+															console.log(propKey+": "+property.type);
+															body[propKey] = property.type;
+														});
+														contentBody["body"] = body;
+														contentBodies[mediaType] = contentBody;
 													});
-													contentBody["body"] = body;
-													contentBodies[mediaType] = contentBody;
-												});
+												}
 												
 												newSpac+=`
 														\${desc != null ? "<p>"+desc+"</p>":""}
