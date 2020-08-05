@@ -35,6 +35,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 
@@ -162,7 +163,7 @@ public class ApiServiceImpl implements ApiService {
 				
 			}
 		}
-		System.out.println(model);
+		System.out.println("***** Request Body set *****");
 		return model;
 	}
 	@Override
@@ -181,6 +182,8 @@ public class ApiServiceImpl implements ApiService {
 				retrievePathsRef(refSchema, path.getDelete());
 			}
 		}
+		System.out.println("***** Get Model *****");
+		System.out.println(model);
 		return model;
 	}
 	public void retrieveComponentRef(Map<String,Schema> refSchemas) {
@@ -212,18 +215,44 @@ public class ApiServiceImpl implements ApiService {
 	public void retrievePathsRef(Map<String, Schema> refSchema, Operation method) {
 		if(method != null) {
 			RequestBody reqBody = method.getRequestBody();
+			ApiResponses resps = method.getResponses();
+			List<Parameter> params = method.getParameters();
+			
+			/**** Responses ref 수정 ****/
+			Set<String> respCodes = resps.keySet();
+			for (String code : respCodes) {
+				Content content  = resps.get(code).getContent();
+				if(content != null) {
+					Set<String> mediaNames = content.keySet();
+					for (String name : mediaNames) {
+						MediaType mediaType = content.get(name);
+						Schema schema = mediaType.getSchema();
+						String type = schema.getType();
+						if(schema.get$ref() != null) {
+							String[] refString = schema.get$ref().split("/");
+							mediaType.setSchema(refSchema.get(refString[refString.length-1]));
+						} else if(type == "array") {
+							ArraySchema arrSchema = (ArraySchema)schema;
+							if(arrSchema.getItems().get$ref() != null) {
+								String[] refString = arrSchema.getItems().get$ref().split("/");
+								arrSchema.setItems(refSchema.get(refString[refString.length-1]));
+							}
+						}
+					}
+				}
+				
+			}
+			/**** Responses ref 수정 끝 ****/
+			
+			/**** Request Body ref 처리 ****/
 			if(reqBody != null) {
-				System.out.println("************reqBody************");
 				Content content = reqBody.getContent();
 				Set<String> mediaNames = content.keySet();
-				System.out.println(mediaNames);
 				for (String name : mediaNames) {
 					MediaType mediaType = content.get(name);
 					Schema schema = mediaType.getSchema();
 					String type = schema.getType();
 					if(schema.get$ref() != null) {
-						System.out.println("*****ref*****");
-						System.out.println(schema.get$ref());
 						String[] refString = schema.get$ref().split("/");
 						mediaType.setSchema(refSchema.get(refString[refString.length-1]));
 					} else if(type == "array") {
@@ -234,13 +263,27 @@ public class ApiServiceImpl implements ApiService {
 						}
 					}
 				}
-				System.out.println("************reqBody end************");
 			}
+			/**** Request Body ref 수정 끝 ****/
 			
-			ApiResponses resps = method.getResponses();
-			
-			List<Parameter> params = method.getParameters();
-			
+			/**** Parameters ref 수정 ****/
+			if(params != null) {
+				for (Parameter param : params) {
+					Schema schema = param.getSchema();
+					String type = schema.getType();
+					if(schema.get$ref() != null) {
+						String[] refString = schema.get$ref().split("/");
+						param.setSchema(refSchema.get(refString[refString.length-1]));
+					} else if(type == "array") {
+						ArraySchema arrSchema = (ArraySchema)schema;
+						if(arrSchema.getItems().get$ref() != null) {
+							String[] refString = arrSchema.getItems().get$ref().split("/");
+							arrSchema.setItems(refSchema.get(refString[refString.length-1]));
+						}
+					}
+				}
+			}
+			/**** Parameters ref 수정 끝 ****/
 		}
 	}
 	
@@ -261,7 +304,6 @@ public class ApiServiceImpl implements ApiService {
 			Writer writer = new FileWriter(collectionDir);
 			gson.toJson(original, writer);
 			writer.close();
-			System.out.println(original);
 			System.out.println("*********test script added*********");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -273,7 +315,7 @@ public class ApiServiceImpl implements ApiService {
 		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
 		String url = getCorrectUrl(model);
 		System.out.println("url: "+url);
-		String cmd = "newman run "+collectionDir+" --reporters cli,htmlextra,json,json-summary --global-var \"baseUrl="+url.toString()+"\"";
+		String cmd = "newman run "+collectionDir+" --reporters cli,htmlextra,json-summary --global-var \"baseUrl="+url.toString()+"\"";
 		CLIExecutor.execute(cmd);
 	}
 	
@@ -285,7 +327,6 @@ public class ApiServiceImpl implements ApiService {
 			url.append(uri.getHost());
 			if(uri.getPort() >= 1) url.append(":").append(uri.getPort());
 			url.append(uri.getPath());
-			System.out.println("url: "+url);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
