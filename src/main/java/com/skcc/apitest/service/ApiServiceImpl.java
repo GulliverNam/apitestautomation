@@ -183,7 +183,7 @@ public class ApiServiceImpl implements ApiService {
 			}
 		}
 		System.out.println("***** Get Model *****");
-		System.out.println(model);
+//		System.out.println(model);
 		return model;
 	}
 	public void retrieveComponentRef(Map<String,Schema> refSchemas) {
