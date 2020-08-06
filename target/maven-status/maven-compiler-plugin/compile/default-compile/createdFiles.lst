@@ -1,6 +1,6 @@
 com\skcc\apitest\util\CLIExecutor.class
 com\skcc\apitest\service\ApiServiceImpl.class
 com\skcc\apitest\service\ApiService.class
-com\skcc\apitest\APITestApplication.class
 com\skcc\apitest\controller\MainController.class
+com\skcc\apitest\APITestApplication.class
 com\skcc\apitest\util\OpenApiParser.class

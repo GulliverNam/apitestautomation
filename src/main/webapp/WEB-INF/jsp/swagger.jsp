@@ -272,8 +272,11 @@
 							data: JSON.stringify(formJson),
 							dataType: "json",
 							contentType:"application/json; charset=uft-8",
+							error: function(){
+								alert("error!!");
+							},
 							success: function(data){
-								alert("test success!!");
+								alert("success!!");
 							}
 						});
 					} else {

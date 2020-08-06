@@ -51,7 +51,7 @@ public class MainController {
 		}
 		service.openAPIToCollection();
 		
-		service.addTestScript(form.getTestForm());
+		service.addTestScript(openAPI, form.getTestForm(), form.getReqBodyForm());
 		
 		service.runTest();
 		return "success";
