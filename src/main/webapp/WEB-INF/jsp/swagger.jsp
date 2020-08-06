@@ -283,7 +283,28 @@
 						alert("parameter 값을 입력해 주세요.");
 					}
 				});
+				$(document).on("click", "#debugBtn", function(){
+					alert("debug!!");
+					console.log(openAPI);
+					$.ajax({
+						url: "/debug",
+						type: "post",
+						data: JSON.stringify(openAPI),
+						accept: "application/json",
+						dataType: "json",
+						contentType:"application/json; charset=uft-8",
+						error: function(data){
+							console.log(data);
+							alert("debug error!!");
+						},
+						success: function(data){
+							console.log(data);
+							alert("debug success!!");
+						}
+					});
+				});
 			});
+			
 		</script>
 	</head>
 	<body>
@@ -297,6 +318,7 @@
 		<div id="apiSpec" class="container p-3 my-3">
 			<div id="fileName">
 			</div>
+			<button type="button" class="btn btn-success" id="debugBtn">입력</button>
 			<form id="specForm" method="post" action="">
 			</form>
 		</div>

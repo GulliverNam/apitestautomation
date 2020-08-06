@@ -23,16 +23,11 @@ import com.skcc.apitest.util.CLIExecutor;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.oas.models.parameters.RequestBody;
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
 
 @Service
 public class ApiServiceImpl implements ApiService {
@@ -129,7 +124,7 @@ public class ApiServiceImpl implements ApiService {
 		Set<String> keySet = reqBodyForm.keySet();
 		for (String key : keySet) {
 			if(!key.contains("content")) {
-				String[] keyString = key.split("-");
+				String[] keyString = key.split("_");
 				String pathName = keyString[0];
 				String httpMethod = keyString[1];
 				String mediaType = (String) reqBodyForm.get(key);
@@ -147,7 +142,7 @@ public class ApiServiceImpl implements ApiService {
 				Schema schema = op.getRequestBody().getContent().get(mediaType).getSchema();
 				String type = schema.getType();
 				
-				Map<String, String> body = new Gson().fromJson((String) reqBodyForm.get(key+"-content"), Map.class);
+				Map<String, String> body = new Gson().fromJson((String) reqBodyForm.get(key+"_content"), Map.class);
 				
 				if("object".equals(type)) {
 					Map<String, Schema> props = schema.getProperties();
@@ -172,25 +167,11 @@ public class ApiServiceImpl implements ApiService {
 	 */
 	@Override
 	public OpenAPI getApiSpec() {
-		OpenAPI model = new OpenAPIV3Parser().read(openApiDir);
-		Paths paths = model.getPaths();
-		Set<String> pathNames = paths.keySet();
-		if(model.getComponents() != null) {
-			Map<String, Schema> refSchema = model.getComponents().getSchemas();
-			retrieveComponentRef(refSchema);
-			for (String pathName : pathNames) {
-				PathItem path = paths.get(pathName);
-				retrievePathsRef(refSchema, path.getGet());
-				retrievePathsRef(refSchema, path.getPost());
-				retrievePathsRef(refSchema, path.getPut());
-				retrievePathsRef(refSchema, path.getDelete());
-			}
-		}
-		System.out.println("***** Get Model *****");
+		ParseOptions options = new ParseOptions();
+		options.setResolveFully(true);
+		OpenAPI model = new OpenAPIV3Parser().readLocation(openApiDir, null, options).getOpenAPI();
 		return model;
 	}
-	
-	
 	
 	@Override
 	public void openAPIToCollection() {
@@ -226,115 +207,6 @@ public class ApiServiceImpl implements ApiService {
 		System.out.println("run test!!!\ncmd: "+cmd);
 		CLIExecutor.execute(cmd);
 	}
-	/**
-	 * OpenAPI의 component 부분의 ref 종속성을 없애는 함수
-	 * @param refSchemas - component의 schema Map
-	 */
-	public void retrieveComponentRef(Map<String,Schema> refSchemas) {
-		Set<String> schemaKeys = refSchemas.keySet();
-		for (String schemaKey : schemaKeys) {
-			Schema schema = refSchemas.get(schemaKey);
-			String type = schema.getType();
-			if("array".equals(type)) {
-				ArraySchema arrSchema = (ArraySchema) schema;
-				Schema<?> items = arrSchema.getItems();
-				if(items.get$ref() != null) {
-					String[] refString = items.get$ref().split("/");
-					arrSchema.setItems(refSchemas.get(refString[refString.length - 1]));
-				}
-			}else if("object".equals(type)) {
-				Map<String, Schema> props = schema.getProperties();
-				Set<String> propsKeys = props.keySet();
-				for (String propsKey : propsKeys) {
-					Schema prop = props.get(propsKey);
-					if(prop.get$ref() != null){
-						String[] refString = prop.get$ref().split("/");
-						props.put(propsKey, refSchemas.get(refString[refString.length - 1]));
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Paths의 ref 종속성을 없애는 함수(Responses, RequestBody, Parameters)
-	 * @param refSchemas - component의 schemamap
-	 * @param method - Path의 HttpMethod 객체(swagger-parser 객체)
-	 */
-	public void retrievePathsRef(Map<String, Schema> refSchemas, Operation method) {
-		if(method != null) {
-			RequestBody reqBody = method.getRequestBody();
-			ApiResponses resps = method.getResponses();
-			List<Parameter> params = method.getParameters();
-			
-			/**** Responses ref 수정 ****/
-			Set<String> respCodes = resps.keySet();
-			for (String code : respCodes) {
-				Content content  = resps.get(code).getContent();
-				if(content != null) {
-					Set<String> mediaNames = content.keySet();
-					for (String name : mediaNames) {
-						MediaType mediaType = content.get(name);
-						Schema schema = mediaType.getSchema();
-						String type = schema.getType();
-						if(schema.get$ref() != null) {
-							String[] refString = schema.get$ref().split("/");
-							mediaType.setSchema(refSchemas.get(refString[refString.length-1]));
-						} else if(type == "array") {
-							ArraySchema arrSchema = (ArraySchema)schema;
-							if(arrSchema.getItems().get$ref() != null) {
-								String[] refString = arrSchema.getItems().get$ref().split("/");
-								arrSchema.setItems(refSchemas.get(refString[refString.length-1]));
-							}
-						}
-					}
-				}
-				
-			}
-			/**** Responses ref 수정 끝 ****/
-			
-			/**** Request Body ref 처리 ****/
-			if(reqBody != null) {
-				Content content = reqBody.getContent();
-				Set<String> mediaNames = content.keySet();
-				for (String name : mediaNames) {
-					MediaType mediaType = content.get(name);
-					Schema schema = mediaType.getSchema();
-					String type = schema.getType();
-					if(schema.get$ref() != null) {
-						String[] refString = schema.get$ref().split("/");
-						mediaType.setSchema(refSchemas.get(refString[refString.length-1]));
-					} else if(type == "array") {
-						ArraySchema arrSchema = (ArraySchema)schema;
-						if(arrSchema.getItems().get$ref() != null) {
-							String[] refString = arrSchema.getItems().get$ref().split("/");
-							arrSchema.setItems(refSchemas.get(refString[refString.length-1]));
-						}
-					}
-				}
-			}
-			/**** Request Body ref 수정 끝 ****/
-			
-			/**** Parameters ref 수정 ****/
-			if(params != null) {
-				for (Parameter param : params) {
-					Schema schema = param.getSchema();
-					String type = schema.getType();
-					if(schema.get$ref() != null) {
-						String[] refString = schema.get$ref().split("/");
-						param.setSchema(refSchemas.get(refString[refString.length-1]));
-					} else if(type == "array") {
-						ArraySchema arrSchema = (ArraySchema)schema;
-						if(arrSchema.getItems().get$ref() != null) {
-							String[] refString = arrSchema.getItems().get$ref().split("/");
-							arrSchema.setItems(refSchemas.get(refString[refString.length-1]));
-						}
-					}
-				}
-			}
-			/**** Parameters ref 수정 끝 ****/
-		}
-	}
 	
 	/**
 	 * OpenAPI의 올바른 Url을 생성해주는 함수
@@ -369,67 +241,73 @@ public class ApiServiceImpl implements ApiService {
 				addEventToCollection(testForm, reqBodyForm, model, item, path + "/" + child.getAsJsonObject().get("name").getAsString());
 			else {
 				String method = child.getAsJsonObject().get("request").getAsJsonObject().get("method").getAsString().toLowerCase();
-				String key = path+"-"+method+"-test"; // testForm의 데이터를 찾기 위한 key
+				String key = path+"_"+method+"_test"; // testForm의 데이터를 찾기 위한 key
 				String statusCode = testForm.get(key);
 				
 				TestScriptDTO testScript = new TestScriptDTO();
-				if("default".equals(statusCode)) {
-					testScript.getExec().add("pm.test(\"Status code is 404\", function () {pm.response.to.have.status(404);});");
-				} else {
-					testScript.getExec().add("pm.test(\"Status code is "+statusCode+"\", function () {pm.response.to.have.status("+statusCode+");});");
-					if(Integer.parseInt(statusCode) / 100 == 2) {
-						Operation op = new Operation();
-						if("get".equals(method)) {
-							op = model.getPaths().get(path).getGet();
-						} else if("post".equals(method)) {
-							op = model.getPaths().get(path).getPost();
-						} else if("put".equals(method)) {
-							op = model.getPaths().get(path).getPut();
-						} else if("delete".equals(method)) {
-							op = model.getPaths().get(path).getDelete();
-						}
-						String mediaName = (String)reqBodyForm.get(path+"-"+method+"-requestBody");
-						Content content = op.getResponses().get(statusCode).getContent();
-						if(content != null) {
-							MediaType mediaType = content.get(mediaName);
-							MediaType allMediaType = content.get("*/*");
-							if(mediaType != null) {
-								Schema schema = mediaType.getSchema();
-								String type = schema.getType();
-								// key check & value type check
-								if("object".equals(type)) {
-									Map<String, Schema> props = schema.getProperties();
-									Set<String> propNames = props.keySet();
-									for (String propName : propNames) {
-										String propType = props.get(propName).getType();
-										testScript.getExec().add("pm.test(\"response key-check: "+ propName + "\", function () {" + 
-																 "    pm.expect(pm.response.text()).to.include(\""+propName+"\");" + 
-																 "});");
-										testScript.getExec().add("pm.test(\"response value-check:"+ propName+"("+propType+")"+"\", function () {" + 
-																 "    pm.expect(typeof pm.response.json()."+propName+").to.eql(\""+propType+"\");" + 
-																 "});");
-										
-									}
-								} else if("array".equals(type)) {
+				if(statusCode != null) {
+					if("default".equals(statusCode)) {
+						testScript.getExec().add("pm.test(\"Status code is 404\", function () {pm.response.to.have.status(404);});");
+					} else {
+						testScript.getExec().add("pm.test(\"Status code is "+statusCode+"\", function () {pm.response.to.have.status("+statusCode+");});");
+						if(Integer.parseInt(statusCode) / 100 == 2) {
+							Operation op = new Operation();
+							if("get".equals(method)) {
+								op = model.getPaths().get(path).getGet();
+							} else if("post".equals(method)) {
+								op = model.getPaths().get(path).getPost();
+							} else if("put".equals(method)) {
+								op = model.getPaths().get(path).getPut();
+							} else if("delete".equals(method)) {
+								op = model.getPaths().get(path).getDelete();
+							}
+							String mediaName = (String)reqBodyForm.get(path+"_"+method+"_requestBody");
+							Content content = op.getResponses().get(statusCode).getContent();
+							if(content != null) {
+								MediaType mediaType = content.get(mediaName);
+								MediaType allMediaType = content.get("*/*");
+								if(mediaType != null) {
+									Schema schema = mediaType.getSchema();
+									String type = schema.getType();
+									// key check & value type check
+									if("object".equals(type)) {
+										Map<String, Schema> props = schema.getProperties();
+										Set<String> propNames = props.keySet();
+										for (String propName : propNames) {
+											String propType = props.get(propName).getType();
+											testScript.getExec().add("pm.test(\"response key-check: "+ propName + "\", function () {" + 
+													"    pm.expect(pm.response.text()).to.include(\""+propName+"\");" + 
+													"});");
+											testScript.getExec().add("pm.test(\"response value-check:"+ propName+"("+propType+")"+"\", function () {" + 
+													"    pm.expect(typeof pm.response.json()."+propName+").to.eql(\""+propType+"\");" + 
+													"});");
+											
+										}
+									} else if("array".equals(type)) {
 //									ArraySchema arrSchema = (ArraySchema)schema;
 //									Schema<?> items = arrSchema.getItems();
 //									items.getType();
-								} else {
+									} else {
 //									// only value type check
 //									String[] baseType = {"integer", "string", "boolean", "number"};
 //									if(Arrays.asList(baseType).contains(type)) {
 //										
 //									}
+									}
+								} else if(allMediaType != null) {
+									
+								} else {
+									
 								}
-							} else if(allMediaType != null) {
-								
-							} else {
-								
 							}
 						}
 					}
+				} else{
+					System.out.println("statusCode is null!!!\tkey: "+key);
+					if (testForm.get(path+"/_"+method+"_test") != null){
+						addEventToCollection(testForm, reqBodyForm, model, object, path + "/");
+					}
 				}
-				
 				EventDTO event = new EventDTO();
 				event.setScript(testScript);
 				JsonElement eventJson = new Gson().toJsonTree(event);
@@ -439,4 +317,6 @@ public class ApiServiceImpl implements ApiService {
 			}
 		}
 	}
+
 }
+
