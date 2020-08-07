@@ -1,7 +1,9 @@
 package com.skcc.apitest.util;
 
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.ResolverCache;
@@ -14,12 +16,11 @@ public class OpenApiParser {
 		OpenAPIV3Parser parser = new OpenAPIV3Parser();
 		ParseOptions options = new ParseOptions();
 		options.setResolveFully(true);
-		OpenAPI model = parser.readLocation("C:\\apitest\\yaml\\openapi.yaml", null, options).getOpenAPI();
+		OpenAPI model = parser.readLocation("C:\\apitest\\swagger\\swagger.yaml", null, options).getOpenAPI();
 //		ResolverCache cache = new ResolverCache(model, null, null);
 		
-		PathItem pathItem = model.getPaths().get("/pet");
 //		System.out.println(cache.loadRef(reqBody.get$ref(), RefFormat.INTERNAL, Object.class));
-		System.out.println(pathItem);
+		System.out.println(model);
 	}
 	
 }
